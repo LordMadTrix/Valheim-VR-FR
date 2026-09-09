@@ -968,6 +968,10 @@ namespace ValheimVRMod.VRCore
             vrCam.gameObject.AddComponent<VRComfortVignette>();
             vrCam.gameObject.AddComponent<VRGraphicsOptimizer>();
             _instance.AddComponent<VRConsumableGesture>();
+            _instance.AddComponent<VRGravityGrab>();
+            _instance.AddComponent<VRShoulderTorch>();
+            _instance.AddComponent<VRSailingWindGuide>();
+            _instance.AddComponent<VRSpectatorCamera>();
             _instance.SetActive(true);
             vrCam.enabled = true;
             _vrCam = vrCam;

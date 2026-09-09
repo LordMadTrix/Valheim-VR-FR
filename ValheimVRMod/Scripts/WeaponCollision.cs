@@ -301,13 +301,48 @@ namespace ValheimVRMod.Scripts
                         Player.m_localPlayer.m_animEvent,
                         null, item, null, 0.0f, 0.0f))
             {
+                float hapticDuration = 0.2f;
+                float hapticFreq = 100f;
+                float hapticAmp = 0.5f;
+
+                if (VHVRConfig.IsDynamicMaterialHapticsEnabled() && collider != null)
+                {
+                    float mult = VHVRConfig.GetHapticIntensityMultiplier();
+                    if (collider.GetComponentInParent<TreeBase>() != null || collider.GetComponentInParent<TreeLog>() != null)
+                    {
+                        // Impact Bois (Hache sur tronc) : vibration plus longue, sourde et boisée
+                        hapticDuration = 0.22f;
+                        hapticFreq = 65f;
+                        hapticAmp = 0.7f * mult;
+                    }
+                    else if (collider.GetComponentInParent<MineRock>() != null || collider.GetComponentInParent<MineRock5>() != null || isLastHitOnTerrain)
+                    {
+                        // Impact Pierre / Minerai (Pioche sur filon) : choc sec, violent et percutant
+                        hapticDuration = 0.09f;
+                        hapticFreq = 175f;
+                        hapticAmp = 0.95f * mult;
+                    }
+                    else if (collider.GetComponentInParent<Character>() != null)
+                    {
+                        // Impact Ennemi / Chair : impact dynamique
+                        hapticDuration = 0.16f;
+                        hapticFreq = 110f;
+                        hapticAmp = 0.8f * mult;
+                    }
+                    else
+                    {
+                        hapticAmp *= mult;
+                    }
+                    hapticAmp = Mathf.Clamp01(hapticAmp);
+                }
+
                 if (isVanillaRightHandedWeapon)
                 {
-                    VRPlayer.mainWeaponHand.hapticAction.Execute(0, 0.2f, 100, 0.5f, VRPlayer.mainWeaponHandInputSource);
+                    VRPlayer.mainWeaponHand.hapticAction.Execute(0, hapticDuration, hapticFreq, hapticAmp, VRPlayer.mainWeaponHandInputSource);
                 }
                 else
                 {
-                    VRPlayer.mainWeaponHand.otherHand.hapticAction.Execute(0, 0.2f, 100, 0.5f, VRPlayer.secondaryWeaponHandInputSource);
+                    VRPlayer.mainWeaponHand.otherHand.hapticAction.Execute(0, hapticDuration, hapticFreq, hapticAmp, VRPlayer.secondaryWeaponHandInputSource);
                 }
                 // bHaptics
                 if (!BhapticsTactsuit.suitDisabled)

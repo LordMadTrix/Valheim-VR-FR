@@ -6,14 +6,14 @@
 
 <br/>
 
-[![Dernière Release](https://img.shields.io/badge/Release-v0.9.24--FR-gold.svg?style=for-the-badge&logo=github)](https://github.com/LordMadTrix/Valheim-VR-FR/releases)
+[![Dernière Release](https://img.shields.io/badge/Release-v0.9.25--FR-gold.svg?style=for-the-badge&logo=github)](https://github.com/LordMadTrix/Valheim-VR-FR/releases)
 [![Compatibilité Valheim](https://img.shields.io/badge/Valheim-Unity%206%20%7C%20Ashlands%20%7C%20Bog%20Witch-blue.svg?style=for-the-badge&logo=steam)](https://store.steampowered.com/app/892970/Valheim/)
 [![Langue](https://img.shields.io/badge/Langue-100%25%20Fran%C3%A7ais-green.svg?style=for-the-badge)](#-7-traduction-int%C3%A9grale-en-fran%C3%A7ais)
 [![OpenVR / SteamVR](https://img.shields.io/badge/VR-SteamVR%20%7C%20OpenVR-orange.svg?style=for-the-badge&logo=steamvr)](https://store.steampowered.com/app/250820/SteamVR/)
 [![Licence](https://img.shields.io/badge/Licence-GPL--3.0-purple.svg?style=for-the-badge)](LICENSE)
 
 ### ⚔️ Plongez dans le dixième monde nordique en totale immersion à 360° en Réalité Virtuelle native ⚔️
-*Version enrichie et francisée avec menus intégrés, installateur graphique dédié, profils matériels, synchronisation 90Hz, purge VRAM, consommation physique, confort anti-cinétose, visée stabilisée et mode assis.*
+*Version enrichie et francisée avec menus intégrés, installateur graphique dédié, profils matériels, synchronisation 90Hz, purge VRAM, consommation physique, ramassage à distance style Alyx, torche d'épaule, girouette de drakkar, haptique par matériau, lissage miroir PC et mode assis.*
 
 [📦 Télécharger l'Installateur (Setup .exe)](https://github.com/LordMadTrix/Valheim-VR-FR/releases/latest) • [🎮 Commandes en VR](#-commandes-et-gestes-en-jeu) • [🛠️ Compilation](#-guide-de-compilation)
 
@@ -21,27 +21,27 @@
 
 ---
 
-## 🌟 Nouveautés Majeures de l'Édition Française (v0.9.24)
+## 🌟 Nouveautés Majeures de l'Édition Française (v0.9.25)
 
 <table>
 <tr>
 <td width="50%">
 
-### 🎮 1. Intégration Native dans les Menus de Valheim
-* **Bouton Direct en Jeu** : Le menu principal et le menu pause (Échap) affichent désormais un bouton clair et élégant **`PARAMÈTRES VR`** au lieu du vieux libellé brut.
-* **Accès dans les Paramètres Vanilla** : Un bouton d'accès rapide **`🥽 Options VR`** est injecté directement dans la boîte de dialogue officielle des **Paramètres** de Valheim !
-* **Menu Nettoyé** : Suppression définitive des boutons de debug encombrants (*Screenshot*, *Auto-pickup*) pour une interface 100% immersive.
-* **Toutes les Options Configurables** : Plus de 40 réglages VR avec infobulles explicatives en français (ombres, Hz, haptique, confort, visée, distance de bouche...).
+### 🎮 1. Intégration Native & Tout Configurable dans les Menus
+* **Bouton Direct en Jeu** : Le menu principal et le menu pause (Échap) affichent un bouton clair et élégant **`PARAMÈTRES VR`**.
+* **Accès dans les Paramètres Vanilla** : Bouton d'accès rapide **`🥽 Options VR`** directement dans la boîte de dialogue officielle des **Paramètres** de Valheim !
+* **Menu Épuré** : Suppression définitive des boutons de debug encombrants (*Screenshot*, *Auto-pickup*).
+* **Toutes les Nouvelles Options Réglables en Temps Réel** : Modifiez la portée de saisie, la luminosité de la torche, l'intensité des vibrations ou la fluidité spectateur directement en jeu sans redémarrer !
 
 </td>
 <td width="50%">
 
-### 🥽 2. Installateur Graphique Dédié (`ValheimVR-Setup.exe`)
-* **Design Viking & Nordique** : Interface soignée reprenant les teintes sombres ardoise (`#0D1015`) et dorées de Valheim avec icône applicative exclusive.
-* **Sélecteur de Profils Matériels** : Choisissez en 1 clic entre **Éco / Quest 2**, **Équilibré** ou **Ultra / Mythique**.
-* **Détection Automatique** : Scanne instantanément vos bibliothèques Steam multi-disques (`C:\`, `D:\`, `E:\`...).
-* **Déploiement en 1 Clic** : Installe BepInExPack, les plugins natifs OpenVR 64-bit, les profils SteamVR et le mod compilé.
-* **100% Réversible** : Un bouton *Restaurer Vanilla* permet de repasser en version écran plat classique à tout moment sans toucher à vos personnages ni sauvegardes.
+### 🥽 2. Nouvelles Mécaniques Immersives VR
+* **Ramassage Gestuel à Distance ("Gravity Grab")** : Pointez un objet au sol et tirez-le vers votre main d'un coup de poignet ou d'une pression sur la gâchette Grip (style Half-Life: Alyx).
+* **Torche Mains Libres à l'Épaule** : Éclairez les cryptes et donjons tout en maniant pioche ou armes à deux mains.
+* **Girouette & Guide de Vent sur les Bateaux** : Afficheur physique dynamique de vent sur les drakkars (Rouge = face, Orange = travers, Vert = vent arrière parfait).
+* **Vibrations Haptiques par Matériau** : Retour haptique distinct selon que vous frappez du bois, de la roche, de la chair ou parez un coup au bouclier.
+* **Lissage Caméra Miroir PC** : Supprime les saccades pour les spectateurs sur Discord/Twitch.
 
 </td>
 </tr>
@@ -51,16 +51,17 @@
 ### ⚡ 3. Optimisations Extrêmes & Fluidité VR
 * **Synchronisation Physique Ajustable** : Alignement dynamique de la boucle physique (72, 80, 90, 120, 144 Hz) sur la fréquence native de votre casque VR.
 * **Culling Intelligent d'Ombres & Distance Réglable** : Gain de **+15 à 25 FPS** dans les forêts denses et grands villages vikings grâce aux cascades stéréo VR.
-* **Purge VRAM Automatique aux Portails** : Déchargement instantané de la mémoire lors des téléportations sous écran noir pour éradiquer les fuites de mémoire et crashs.
-* **Textures Ultra Nettes** : Filtrage anisotrope forcé 16x pour un piqué d'image incomparable sur les runes, le bois et la pierre.
+* **Purge VRAM Automatique aux Portails** : Déchargement instantané de la mémoire lors des téléportations sous écran noir.
+* **Textures Ultra Nettes** : Filtrage anisotrope forcé 16x pour un piqué d'image incomparable.
 
 </td>
 <td width="50%">
 
-### 🍻 4. Immersion Gestuelle & Confort
-* **Manger & Boire Naturellement** : Approchez physiquement votre aliment ou chope de votre casque avec retour haptique progressif et support vestes bHaptics.
-* **Mode Assis & Recalibration Instantanée** : Jouez assis depuis un fauteuil (compensation +0.50m) et recalibrez la vue instantanément via `L3 + R3` (1s).
-* **Vignette Anti-Cinétose & Lissage d'Arc** : Confort total lors des sprints et sur les drakkars, et visée chirurgicale sans tremblement à l'arc.
+### 🍻 4. Installateur Graphique Dédié (`ValheimVR-Setup.exe`)
+* **Design Viking & Nordique** : Interface soignée reprenant les teintes sombres ardoise (`#0D1015`) et dorées de Valheim.
+* **Sélecteur de Profils Matériels** : Choisissez en 1 clic entre **Éco / Quest 2**, **Équilibré** ou **Ultra / Mythique**.
+* **Détection Automatique Multi-Disques** : Scanne instantanément vos répertoires Steam.
+* **100% Réversible** : Bouton *Restaurer Vanilla* pour repasser en version écran plat classique à tout moment.
 
 </td>
 </tr>
@@ -133,6 +134,9 @@ Compatible avec tous les casques PCVR et autonomes connectés via SteamVR :
 
 | Action en Jeu | Geste / Contrôleur VR |
 | :--- | :--- |
+| **Ramassage à distance (Alyx)** | Pointez un objet/ressource au sol et pressez la gâchette Grip (Saisie) |
+| **Torche mains libres** | Conservez une torche dans l'inventaire pour un éclairage automatique d'épaule |
+| **Girouette de bateau** | Regardez devant le gouvernail : flèche dynamique verte/orange/rouge selon le vent |
 | **Manger / Boire** | Approchez physiquement la nourriture ou la chope de votre casque VR |
 | **Recalibration rapide** | Maintenez les deux joysticks enfoncés (`L3 + R3`) pendant 1 seconde |
 | **Attaque au corps à corps** | Donnez un coup physique dans la direction de l'ennemi avec votre arme |

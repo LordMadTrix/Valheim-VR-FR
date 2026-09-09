@@ -161,7 +161,16 @@ namespace ValheimVRMod.Utilities
             { "VRMaxShadowDistance", "Distance max des ombres VR (m)" },
             { "MemoryCleanupEnabled", "Purge VRAM automatique aux portails" },
             { "HapticConsumptionFeedback", "Vibration haptique à la consommation" },
-            { "MouthProximityDistance", "Distance d'activation bouche/casque (m)" }
+            { "MouthProximityDistance", "Distance d'activation bouche/casque (m)" },
+            { "ShoulderTorchEnabled", "Torche d'épaule mains libres" },
+            { "ShoulderTorchBrightness", "Luminosité torche d'épaule" },
+            { "SpectatorCameraSmoothing", "Lissage caméra miroir PC" },
+            { "SpectatorSmoothFactor", "Fluidité caméra spectateur" },
+            { "GravityGrabEnabled", "Ramassage gestuel à distance (Gravité)" },
+            { "GravityGrabRange", "Portée du ramassage à distance (m)" },
+            { "DynamicMaterialHaptics", "Vibrations selon le matériau frappé" },
+            { "HapticIntensityMultiplier", "Multiplicateur de vibration" },
+            { "SailingWindIndicatorEnabled", "Girouette de vent sur les navires" }
         };
 
         private static readonly Dictionary<string, string> Descriptions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -195,7 +204,16 @@ namespace ValheimVRMod.Utilities
             { "TwoHandedWield", "Permet de tenir les armes lourdes et d'hast à deux mains avec les deux manettes VR." },
             { "CrossbowManualReload", "Nécessite d'armer physiquement la corde de l'arbalète avec la seconde main." },
             { "ShowDamageText", "Affiche les indicateurs de dégâts textuels au-dessus des cibles touchées." },
-            { "UseAmplifyOcclusion", "Améliore la profondeur des ombres de contact et le relief ambiant en réalité virtuelle." }
+            { "UseAmplifyOcclusion", "Améliore la profondeur des ombres de contact et le relief ambiant en réalité virtuelle." },
+            { "ShoulderTorchEnabled", "Allume une source de lumière chaude sur votre épaule gauche dès qu'une torche est présente dans l'inventaire, libérant vos deux mains pour les armes lourdes ou la pioche." },
+            { "ShoulderTorchBrightness", "Multiplicateur de puissance lumineuse de la torche d'épaule mains libres." },
+            { "SpectatorCameraSmoothing", "Applique un lissage cinématique par interpolation sur la fenêtre de jeu de l'écran PC afin de supprimer tout tremblement pour les spectateurs et streams Twitch/Discord." },
+            { "SpectatorSmoothFactor", "Vitesse de suivi de la caméra spectateur PC (une valeur plus basse offre un rendu plus doux et cinématographique)." },
+            { "GravityGrabEnabled", "Pointez un objet ou ressource au sol avec votre main et appuyez sur la gâchette de saisie (Grip) pour l'attirer instantanément vers vous (style Half-Life: Alyx)." },
+            { "GravityGrabRange", "Distance maximale en mètres à laquelle vous pouvez cibler et attirer un objet au sol (1 à 8 mètres)." },
+            { "DynamicMaterialHaptics", "Adapte les impulsions haptiques des manettes selon la dureté du matériau frappé : bois résonant, roche et minerais percutants, chair organique ou parade au bouclier." },
+            { "HapticIntensityMultiplier", "Multiplicateur global de force des vibrations haptiques dans les manettes VR." },
+            { "SailingWindIndicatorEnabled", "Affiche une girouette physique et un streamer de vent directement au-dessus du gouvernail du bateau, indiquant le vent relatif et l'efficacité optimale de la voilure." }
         };
 
         private static readonly Dictionary<string, string> Values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)

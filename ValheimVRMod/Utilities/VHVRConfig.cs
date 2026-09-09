@@ -72,10 +72,21 @@ namespace ValheimVRMod.Utilities
         private static ConfigEntry<bool> enableShadowOptimization;
         private static ConfigEntry<float> vrMaxShadowDistance;
         private static ConfigEntry<bool> enableMemoryCleanup;
+        private static ConfigEntry<bool> enableShoulderTorch;
+        private static ConfigEntry<float> shoulderTorchBrightness;
+        private static ConfigEntry<bool> enableSpectatorSmoothing;
+        private static ConfigEntry<float> spectatorSmoothFactor;
 
         // Gestures & Feedback
         private static ConfigEntry<bool> hapticConsumptionFeedback;
         private static ConfigEntry<float> mouthProximityDistance;
+        private static ConfigEntry<bool> enableGravityGrab;
+        private static ConfigEntry<float> gravityGrabRange;
+        private static ConfigEntry<bool> enableDynamicMaterialHaptics;
+        private static ConfigEntry<float> hapticIntensityMultiplier;
+
+        // Navigation & Sailing
+        private static ConfigEntry<bool> enableSailingWindIndicator;
 
         // UI Settings
         private static ConfigEntry<float> overlayCurvature;
@@ -543,6 +554,55 @@ namespace ValheimVRMod.Utilities
                                               "MemoryCleanupEnabled",
                                               true,
                                               "Automatically unloads unused assets and clears VRAM during portal teleportations to prevent crashes.");
+
+            enableShoulderTorch = config.Bind("Graphics",
+                                              "ShoulderTorchEnabled",
+                                              true,
+                                              "Attaches an ambient light to your shoulder when a torch is in inventory, keeping hands free.");
+
+            shoulderTorchBrightness = config.Bind("Graphics",
+                                                  "ShoulderTorchBrightness",
+                                                  1.0f,
+                                                  new ConfigDescription("Brightness multiplier for the hands-free shoulder torch.",
+                                                  new AcceptableValueRange<float>(0.2f, 2.5f)));
+
+            enableSpectatorSmoothing = config.Bind("Graphics",
+                                                   "SpectatorCameraSmoothing",
+                                                   true,
+                                                   "Smooths desktop PC monitor camera to eliminate motion sickness for viewers.");
+
+            spectatorSmoothFactor = config.Bind("Graphics",
+                                                "SpectatorSmoothFactor",
+                                                6.0f,
+                                                new ConfigDescription("Smoothing speed for desktop spectator camera (lower is smoother, higher is more responsive).",
+                                                new AcceptableValueRange<float>(1.0f, 15.0f)));
+
+            enableGravityGrab = config.Bind("Motion Control",
+                                           "GravityGrabEnabled",
+                                           true,
+                                           "Allows pointing at ground items and flicking wrist/pressing grip to attract them to your hand.");
+
+            gravityGrabRange = config.Bind("Motion Control",
+                                           "GravityGrabRange",
+                                           4.5f,
+                                           new ConfigDescription("Maximum distance in meters for gesture item pickup.",
+                                           new AcceptableValueRange<float>(1.0f, 8.0f)));
+
+            enableDynamicMaterialHaptics = config.Bind("Motion Control",
+                                                       "DynamicMaterialHaptics",
+                                                       true,
+                                                       "Adapts controller impact vibration feel based on wood, stone, metal, or shield blocks.");
+
+            hapticIntensityMultiplier = config.Bind("Motion Control",
+                                                    "HapticIntensityMultiplier",
+                                                    1.0f,
+                                                    new ConfigDescription("Global controller vibration strength multiplier.",
+                                                    new AcceptableValueRange<float>(0.2f, 2.0f)));
+
+            enableSailingWindIndicator = config.Bind("UI",
+                                                     "SailingWindIndicatorEnabled",
+                                                     true,
+                                                     "Displays an immersive physical wind streamer on ships to navigate without looking at the minimap.");
         }
 
         private static void HipTrackerIndex_SettingChanged(object sender, EventArgs e)
@@ -2124,6 +2184,20 @@ namespace ValheimVRMod.Utilities
 
         public static bool IsHapticConsumptionFeedbackEnabled() => hapticConsumptionFeedback != null && hapticConsumptionFeedback.Value;
         public static float GetMouthProximityDistance() => mouthProximityDistance != null ? mouthProximityDistance.Value : 0.22f;
+
+        public static bool IsShoulderTorchEnabled() => enableShoulderTorch != null && enableShoulderTorch.Value;
+        public static float GetShoulderTorchBrightness() => shoulderTorchBrightness != null ? shoulderTorchBrightness.Value : 1.0f;
+
+        public static bool IsSpectatorSmoothingEnabled() => enableSpectatorSmoothing != null && enableSpectatorSmoothing.Value;
+        public static float GetSpectatorSmoothFactor() => spectatorSmoothFactor != null ? spectatorSmoothFactor.Value : 6.0f;
+
+        public static bool IsGravityGrabEnabled() => enableGravityGrab != null && enableGravityGrab.Value;
+        public static float GetGravityGrabRange() => gravityGrabRange != null ? gravityGrabRange.Value : 4.5f;
+
+        public static bool IsDynamicMaterialHapticsEnabled() => enableDynamicMaterialHaptics != null && enableDynamicMaterialHaptics.Value;
+        public static float GetHapticIntensityMultiplier() => hapticIntensityMultiplier != null ? hapticIntensityMultiplier.Value : 1.0f;
+
+        public static bool IsSailingWindIndicatorEnabled() => enableSailingWindIndicator != null && enableSailingWindIndicator.Value;
 
     }
 }
