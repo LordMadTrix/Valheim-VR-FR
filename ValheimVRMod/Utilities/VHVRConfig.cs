@@ -56,6 +56,18 @@ namespace ValheimVRMod.Utilities
         private static ConfigEntry<bool> enableBowAimSmoothing;
         private static ConfigEntry<float> bowAimSmoothingStrength;
 
+        // Immersion / Gestures
+        private static ConfigEntry<bool> enablePhysicalConsumption;
+
+        // Seated Mode & Quick Recenter
+        private static ConfigEntry<bool> enableSeatedMode;
+        private static ConfigEntry<float> seatedHeightOffset;
+        private static ConfigEntry<bool> enableQuickRecenter;
+
+        // VR Graphics & Sharpness
+        private static ConfigEntry<bool> enableVRSharpening;
+        private static ConfigEntry<bool> enableVRAntiGlareBloom;
+
         // UI Settings
         private static ConfigEntry<float> overlayCurvature;
         private static ConfigEntry<float> overlayWidth;
@@ -453,6 +465,37 @@ namespace ValheimVRMod.Utilities
                                                   "ComfortVignetteOnSprint",
                                                   true,
                                                   "Apply comfort vignette while running/sprinting.");
+
+            enablePhysicalConsumption = config.Bind("MotionControls",
+                                                    "PhysicalConsumptionEnabled",
+                                                    true,
+                                                    "Allows eating food or drinking potions by bringing your hand to your mouth/headset.");
+
+            enableSeatedMode = config.Bind("General",
+                                           "SeatedModeEnabled",
+                                           false,
+                                           "Enables seated play with virtual height compensation.");
+
+            seatedHeightOffset = config.Bind("General",
+                                             "SeatedHeightOffset",
+                                             0.5f,
+                                             new ConfigDescription("Virtual vertical height offset when playing in seated mode.",
+                                             new AcceptableValueRange<float>(0.1f, 1.2f)));
+
+            enableQuickRecenter = config.Bind("Controls",
+                                              "QuickRecenterEnabled",
+                                              true,
+                                              "Holding both thumbsticks (L3 + R3) for 1 second recalibrates player height and orientation instantly.");
+
+            enableVRSharpening = config.Bind("Graphics",
+                                             "VRSharpeningEnabled",
+                                             true,
+                                             "Forces 16x anisotropic texture filtering for crisp and sharp textures in VR.");
+
+            enableVRAntiGlareBloom = config.Bind("Graphics",
+                                                 "VRAntiGlareBloomEnabled",
+                                                 true,
+                                                 "Softens harsh bloom and glare from the sun/torches in VR lenses.");
         }
 
         private static void HipTrackerIndex_SettingChanged(object sender, EventArgs e)
@@ -2015,6 +2058,16 @@ namespace ValheimVRMod.Utilities
 
         public static bool EnableBowAimSmoothing() => enableBowAimSmoothing != null && enableBowAimSmoothing.Value;
         public static float BowAimSmoothingStrength() => bowAimSmoothingStrength != null ? bowAimSmoothingStrength.Value : 0.5f;
+
+        public static bool IsPhysicalConsumptionEnabled() => enablePhysicalConsumption != null && enablePhysicalConsumption.Value;
+
+        public static bool IsSeatedModeEnabled() => enableSeatedMode != null && enableSeatedMode.Value;
+        public static float SeatedHeightOffset() => seatedHeightOffset != null ? seatedHeightOffset.Value : 0.5f;
+
+        public static bool IsQuickRecenterEnabled() => enableQuickRecenter != null && enableQuickRecenter.Value;
+
+        public static bool IsVRSharpeningEnabled() => enableVRSharpening != null && enableVRSharpening.Value;
+        public static bool IsVRAntiGlareBloomEnabled() => enableVRAntiGlareBloom != null && enableVRAntiGlareBloom.Value;
 
     }
 }

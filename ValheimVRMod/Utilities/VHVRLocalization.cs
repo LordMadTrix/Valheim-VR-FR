@@ -146,7 +146,15 @@ namespace ValheimVRMod.Utilities
             { "CrossbowSaggitalRotationSource", "Source rotation arbalète" },
             { "CrossbowManualReload", "Rechargement manuel arbalète" },
             { "BlockingType", "Méthode de blocage et parade" },
-            { "KnifeMovementSecondaryAttack", "Bond d'attaque au couteau" }
+            { "KnifeMovementSecondaryAttack", "Bond d'attaque au couteau" },
+
+            // Immersion & Confort supplémentaires
+            { "PhysicalConsumptionEnabled", "Consommation physique (Manger / Boire)" },
+            { "SeatedModeEnabled", "Mode Assis (Canapé / Fauteuil)" },
+            { "SeatedHeightOffset", "Hauteur virtuelle mode assis (m)" },
+            { "QuickRecenterEnabled", "Recalibration rapide (L3 + R3)" },
+            { "VRSharpeningEnabled", "Netteté des textures VR (Anisotropie)" },
+            { "VRAntiGlareBloomEnabled", "Atténuation de l'éblouissement solaire" }
         };
 
         private static readonly Dictionary<string, string> Descriptions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -158,6 +166,12 @@ namespace ValheimVRMod.Utilities
             { "ComfortVignetteOnSprint", "Active la vignette de confort lors des accélérations et sprints rapides." },
             { "EnableBowAimSmoothing", "Filtre les micro-tremblements physiques des manettes VR lorsque vous tendez l'arc pour assurer des tirs précis à longue distance." },
             { "BowAimSmoothingStrength", "Intensité du filtre stabilisateur (0.1 = faible, 0.9 = stabilisation très forte)." },
+            { "PhysicalConsumptionEnabled", "Permet de consommer de la nourriture ou boire une potion en approchant physiquement la main de votre casque VR." },
+            { "SeatedModeEnabled", "Active la compensation de hauteur pour jouer confortablement assis tout en conservant une taille normale en jeu." },
+            { "SeatedHeightOffset", "Décalage vertical virtuel appliqué lorsque le mode assis est activé (par défaut +0.50m)." },
+            { "QuickRecenterEnabled", "Maintenir les deux joysticks enfoncés (L3 + R3) pendant 1 seconde réinitialise instantanément votre hauteur et orientation." },
+            { "VRSharpeningEnabled", "Force le filtrage anisotrope 16x pour rendre les textures et inscriptions runiques ultra nettes dans le casque VR." },
+            { "VRAntiGlareBloomEnabled", "Adoucit les halos lumineux intenses et l'éblouissement du soleil pour préserver le confort visuel." },
             { "RecenterOnStart", "Recentrer automatiquement l'affichage du casque VR vers l'avant au chargement de la partie." },
             { "SnapTurnEnabled", "Tourne par crans angulaires au lieu d'une rotation continue pour préserver le confort en VR." },
             { "SnapTurnAngle", "Nombre de degrés pivotés à chaque impulsion du stick analogique (ex: 30°, 45°)." },

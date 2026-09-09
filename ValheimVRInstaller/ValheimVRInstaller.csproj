@@ -7,15 +7,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <AssemblyName>ValheimVR-Setup</AssemblyName>
+    <ApplicationIcon>app.ico</ApplicationIcon>
     <ApplicationTitle>Valheim VR - Installateur Édition Française</ApplicationTitle>
     <Company>LordMadTrix</Company>
     <Product>Valheim VR Mod - Édition Française</Product>
-    <Version>0.9.21.0</Version>
-    <FileVersion>0.9.21.0</FileVersion>
-    <AssemblyVersion>0.9.21.0</AssemblyVersion>
+    <Version>0.9.22.0</Version>
+    <FileVersion>0.9.22.0</FileVersion>
+    <AssemblyVersion>0.9.22.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <Resource Include="app.ico" />
     <EmbeddedResource Include="payload.zip">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>

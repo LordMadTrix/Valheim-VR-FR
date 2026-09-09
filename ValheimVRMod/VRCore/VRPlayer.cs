@@ -11,6 +11,7 @@ using UnityStandardAssets.ImageEffects;
 using ValheimVRMod.Patches;
 using ValheimVRMod.Scripts;
 using ValheimVRMod.Scripts.Block;
+using ValheimVRMod.Scripts.PostProcessing;
 using ValheimVRMod.Utilities;
 using ValheimVRMod.VRCore.BodyTracking;
 using ValheimVRMod.VRCore.UI;
@@ -412,6 +413,8 @@ namespace ValheimVRMod.VRCore
             // Vanilla game does not support attack when riding, so force initiate ranged attack here.
             MountedAttackUtils.CheckMountedMagicAndCrossbowAttack();
 
+            checkQuickRecenter();
+
             if (timerLeft > 0)
             {
                 timerLeft -= Time.deltaTime;
@@ -421,6 +424,36 @@ namespace ValheimVRMod.VRCore
             {
                 timerRight -= Time.deltaTime;
                 rightHand.hapticAction.Execute(0f, 0.1f, 20f, 0.1f, SteamVR_Input_Sources.RightHand);
+            }
+        }
+
+        private float _quickRecenterTimer = 0f;
+        private void checkQuickRecenter()
+        {
+            if (!VHVRConfig.IsQuickRecenterEnabled())
+            {
+                return;
+            }
+
+            // Détection sticks gauche et droite enfoncés (JoyRun + JoyCrouch)
+            bool leftStick = ZInput.GetButton("JoyRun");
+            bool rightStick = ZInput.GetButton("JoyCrouch");
+
+            if (leftStick && rightStick)
+            {
+                _quickRecenterTimer += Time.unscaledDeltaTime;
+                if (_quickRecenterTimer >= 1.0f)
+                {
+                    RequestRecentering();
+                    leftHand?.hapticAction?.Execute(0, 0.25f, 120, 0.6f, SteamVR_Input_Sources.LeftHand);
+                    rightHand?.hapticAction?.Execute(0, 0.25f, 120, 0.6f, SteamVR_Input_Sources.RightHand);
+                    _quickRecenterTimer = -0.8f;
+                    LogUtils.LogInfo("Recalibration VR rapide (L3+R3) effectuée avec succès !");
+                }
+            }
+            else if (_quickRecenterTimer > 0f)
+            {
+                _quickRecenterTimer = 0f;
             }
         }
 
@@ -933,6 +966,8 @@ namespace ValheimVRMod.VRCore
             //Add fade component to camera for transition handling
             _fadeManager = vrCam.gameObject.AddComponent<FadingManager>();
             vrCam.gameObject.AddComponent<VRComfortVignette>();
+            vrCam.gameObject.AddComponent<VRGraphicsOptimizer>();
+            _instance.AddComponent<VRConsumableGesture>();
             _instance.SetActive(true);
             vrCam.enabled = true;
             _vrCam = vrCam;
@@ -1602,6 +1637,13 @@ namespace ValheimVRMod.VRCore
             }
             var desiredLocalPosition = playerCharacter.transform.InverseTransformPoint(playerCharacter.GetEyePoint());
             desiredLocalPosition.x = desiredLocalPosition.z = 0;
+
+            // Compensation de hauteur virtuelle en mode assis
+            if (VHVRConfig.IsSeatedModeEnabled())
+            {
+                desiredLocalPosition.y += VHVRConfig.SeatedHeightOffset();
+            }
+
             return desiredLocalPosition;
         }
 
