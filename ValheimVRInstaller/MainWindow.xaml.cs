@@ -25,6 +25,7 @@ public partial class MainWindow : Window
     {
         Log("====================================================================");
         Log("      ᚢ ᚨ ᛚ ᚺ ᛖ ᛁ ᛗ   ᚡ ᚱ  -  INSTALLATEUR ÉDITION FRANÇAISE       ");
+        Log("             ⚡ Conçu & Forgé par LordMadTrix ⚡                     ");
         Log("====================================================================");
         Log("Recherche de l'installation de Valheim sur votre système...");
 

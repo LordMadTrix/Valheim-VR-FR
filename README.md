@@ -170,3 +170,23 @@ dotnet publish ValheimVRInstaller\ValheimVRInstaller.csproj -c Release -r win-x6
 * **Framework BepInEx** : [BepInExPack Valheim](https://valheim.thunderstore.io/package/denikson/BepInExPack_Valheim/) par la communauté modding Valheim.
 * **Édition Française, Nouveautés & Setup GUI** : Réalisé par **LordMadTrix**.
 * **Licence** : Ce projet est sous licence libre **GPL-3.0**. Consultez le fichier [LICENSE](LICENSE) pour plus d'informations.
+
+---
+
+## 👑 Signature & Auteur Officiel
+
+<div align="center">
+
+<a href="https://github.com/LordMadTrix">
+  <img src="https://raw.githubusercontent.com/LordMadTrix/Valheim-VR-FR/main/docs/lordmadtrix_logo.png" alt="LordMadTrix Official Brand" width="180" />
+</a>
+
+### ⚡ Conçu & Forgé par **[LordMadTrix](https://github.com/LordMadTrix)** ⚡
+*Architecte Systèmes • Immersion VR & Gaming • Optimisation OS & IA*
+
+[![GitHub Profile](https://img.shields.io/badge/GitHub-LordMadTrix-181717?style=for-the-badge&logo=github)](https://github.com/LordMadTrix)
+[![Édition Française](https://img.shields.io/badge/Édition-Française%20Officielle-gold?style=for-the-badge)](https://github.com/LordMadTrix/Valheim-VR-FR)
+
+*« Forger l'excellence technologique au cœur du code et de l'immersion. »*
+
+</div>
