@@ -1,0 +1,191 @@
+<Window x:Class="ValheimVRInstaller.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Valheim VR - Installateur Édition Française"
+        Height="620" Width="820"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Background="#0D1015"
+        Foreground="#E8E2D5"
+        FontFamily="Segoe UI, Arial">
+
+    <Window.Resources>
+        <!-- Style des Boutons Vikings Dorés -->
+        <Style x:Key="VikingGoldButton" TargetType="Button">
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#E6B838" Offset="0"/>
+                        <GradientStop Color="#B8860B" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="#0F1216"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#FFD700"/>
+            <Setter Property="Padding" Value="18,10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4"
+                                SnapsToDevicePixels="True">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#FFD700" Offset="0"/>
+                                <GradientStop Color="#D4AF37" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#3A3D44"/>
+                    <Setter Property="Foreground" Value="#70747E"/>
+                    <Setter Property="BorderBrush" Value="#4F525B"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Style des Boutons Secondaires -->
+        <Style x:Key="VikingSecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="#1C212A"/>
+            <Setter Property="Foreground" Value="#D4AF37"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#5C481A"/>
+            <Setter Property="Padding" Value="14,8"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#2A313E"/>
+                    <Setter Property="BorderBrush" Value="#D4AF37"/>
+                    <Setter Property="Foreground" Value="#FFF8E7"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- CheckBox Nordique -->
+        <Style TargetType="CheckBox">
+            <Setter Property="Foreground" Value="#E0DACB"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,4"/>
+        </Style>
+    </Window.Resources>
+
+    <Border BorderBrush="#685018" BorderThickness="2" CornerRadius="0">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- En-tête -->
+                <RowDefinition Height="Auto"/>
+                <!-- Sélection Dossier -->
+                <RowDefinition Height="Auto"/>
+                <!-- Options -->
+                <RowDefinition Height="Auto"/>
+                <!-- Barre de progression -->
+                <RowDefinition Height="*"/>
+                <!-- Console / Logs -->
+                <RowDefinition Height="Auto"/>
+                <!-- Boutons d'action -->
+            </Grid.RowDefinitions>
+
+            <!-- 1. En-tête Valheim -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,15" HorizontalAlignment="Center">
+                <TextBlock Text="ᚢ ᚨ ᛚ ᚺ ᛖ ᛁ ᛗ   ᚡ ᚱ" FontSize="14" Foreground="#8B7336" HorizontalAlignment="Center" FontWeight="Bold"/>
+                <TextBlock Text="VALHEIM VR • ÉDITION FRANÇAISE" FontSize="26" FontWeight="Bold" Foreground="#F0C342" HorizontalAlignment="Center" Margin="0,2,0,2"/>
+                <TextBlock Text="Installation automatisée, confort anti-cinétose, visée stabilisée et traduction intégrale" FontSize="12" Foreground="#A09B8E" HorizontalAlignment="Center"/>
+                <Separator Margin="0,10,0,0" Background="#3E341C" Width="550"/>
+            </StackPanel>
+
+            <!-- 2. Sélection Répertoire Valheim -->
+            <Border Grid.Row="1" Background="#141820" BorderBrush="#3D341D" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="RÉPERTOIRE DU JEU VALHEIM DÉTECTÉ :" FontSize="11" FontWeight="Bold" Foreground="#9E8746" Margin="0,0,0,4"/>
+                        <TextBox x:Name="TxtGamePath" Background="#0A0C0F" Foreground="#4CE072" BorderBrush="#2F3642" Padding="6" FontSize="13" IsReadOnly="True"/>
+                    </StackPanel>
+                    <Button Grid.Column="1" Content="📁 Parcourir..." Style="{StaticResource VikingSecondaryButton}" Margin="10,18,0,0" VerticalAlignment="Center" Click="BtnBrowse_Click"/>
+                </Grid>
+            </Border>
+
+            <!-- 3. Options VR -->
+            <Border Grid.Row="2" Background="#141820" BorderBrush="#3D341D" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" Margin="5,0">
+                        <TextBlock Text="MODULES &amp; CONFORT VR :" FontSize="11" FontWeight="Bold" Foreground="#9E8746" Margin="0,0,0,6"/>
+                        <CheckBox x:Name="ChkComfortVignette" Content="🛡️ Vignette de confort (Anti-cinétose)" IsChecked="True"/>
+                        <CheckBox x:Name="ChkAimSmoothing" Content="🏹 Lissage de visée à l'arc &amp; arbalète" IsChecked="True"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5,0">
+                        <TextBlock Text="RACCOURCIS &amp; LANGUE :" FontSize="11" FontWeight="Bold" Foreground="#9E8746" Margin="0,0,0,6"/>
+                        <CheckBox x:Name="ChkFrenchTranslation" Content="🇫🇷 Interface &amp; menus 100% en Français" IsChecked="True" IsEnabled="False"/>
+                        <CheckBox x:Name="ChkDesktopShortcut" Content="📌 Créer un raccourci Bureau 'Valheim VR (FR)'" IsChecked="True"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 4. Barre de progression -->
+            <StackPanel Grid.Row="3" Margin="0,0,0,8">
+                <ProgressBar x:Name="PrgProgress" Height="8" Minimum="0" Maximum="100" Value="0" Background="#141820" Foreground="#D4AF37" BorderBrush="#3D341D"/>
+            </StackPanel>
+
+            <!-- 5. Console de logs -->
+            <Border Grid.Row="4" Background="#090B0E" BorderBrush="#252A33" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,12">
+                <ScrollViewer x:Name="Scroller" VerticalScrollBarVisibility="Auto">
+                    <TextBox x:Name="TxtLogs" Background="Transparent" Foreground="#C8C2B3" FontFamily="Consolas, Lucida Console" FontSize="11" BorderThickness="0" TextWrapping="Wrap" IsReadOnly="True"/>
+                </ScrollViewer>
+            </Border>
+
+            <!-- 6. Boutons d'actions -->
+            <Grid Grid.Row="5">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" Content="🔄 Restaurer Vanilla" Style="{StaticResource VikingSecondaryButton}" Click="BtnUninstall_Click" ToolTip="Désactive le mod et restaure Valheim en mode plat classique"/>
+                
+                <Button Grid.Column="2" x:Name="BtnInstall" Content="⚔️ INSTALLER VALHEIM VR (FR)" Style="{StaticResource VikingGoldButton}" Margin="0,0,10,0" Click="BtnInstall_Click"/>
+                
+                <Button Grid.Column="3" x:Name="BtnLaunch" Content="🥽 LANCER EN VR" Style="{StaticResource VikingGoldButton}" Background="#2B8246" BorderBrush="#3BD46B" Click="BtnLaunch_Click" Visibility="Collapsed"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

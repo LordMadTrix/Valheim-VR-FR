@@ -24,7 +24,7 @@ namespace ValheimVRMod.Scripts {
 
         public void OnPointerEnter(PointerEventData eventData) {
             currentHoveredComponent = this;
-            textStr = configValue.Value.Description.Description;
+            textStr = VHVRLocalization.LocalizeDescription(configValue.Key, configValue.Value.Description.Description);
             ConfigSettings.toolTip.SetActive(true);
         }
 

@@ -13,7 +13,7 @@
     <Deterministic>true</Deterministic>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <CommonDir>C:\Program Files (x86)\Steam\steamapps\common\</CommonDir>
+    <CommonDir Condition=" '$(CommonDir)' == '' ">D:\SteamLibrary\steamapps\common\</CommonDir>
     <UnityDir>C:\Program Files (x86)\Hub\Editor\2020.3.45f1\</UnityDir>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -93,7 +93,7 @@
     </Reference>
     <Reference Include="UnityEngine.UI, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Unity\build\ValheimVR_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(CommonDir)Valheim\valheim_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="final_ik.dll">
       <HintPath>..\Unity\build\ValheimVR_Data\Managed\final_ik.dll</HintPath>

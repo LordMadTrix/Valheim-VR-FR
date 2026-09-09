@@ -161,7 +161,7 @@ namespace ValheimVRMod.VRCore.UI {
         private static void createModSettings() {
             settings = Object.Instantiate(settingsPrefab, menuParent);
             settings.AddComponent<SettingsCloneMarker>();
-            settings.transform.Find("Panel").Find("Title").GetComponent<TMP_Text>().text = MenuName;
+            settings.transform.Find("Panel").Find("Title").GetComponent<TMP_Text>().text = "Configuration VR (VHVR)";
             createToolTip(settings.transform);
             var tabButtons = settings.transform.Find("Panel").Find("TabButtons");
 
@@ -262,7 +262,7 @@ namespace ValheimVRMod.VRCore.UI {
             var labels = newTabButton.GetComponentsInChildren<TMP_Text>(includeInactive: true);
             foreach (var label in labels)
             {
-                label.text = section.Key;
+                label.text = VHVRLocalization.LocalizeSection(section.Key);
             }
 
             // Create new tab content
@@ -386,7 +386,7 @@ namespace ValheimVRMod.VRCore.UI {
             var sliderObj = Object.Instantiate(sliderPrefab, parent);
             var configComponent = sliderObj.AddComponent<ConfigComponent>();
             configComponent.configValue = configValue;  
-            sliderObj.transform.Find("Label").GetComponent<TMP_Text>().text = configValue.Key;
+            sliderObj.transform.Find("Label").GetComponent<TMP_Text>().text = VHVRLocalization.LocalizeKey(configValue.Key);
             sliderObj.GetComponent<RectTransform>().anchoredPosition = pos + Vector2.right * 60;
             var slider = sliderObj.GetComponentInChildren<Slider>();
             slider.minValue = float.Parse(type.GetProperty("MinValue").GetValue(acceptableValues).ToString());
@@ -461,7 +461,7 @@ namespace ValheimVRMod.VRCore.UI {
             var configComponent = chooserObj.AddComponent<ConfigComponent>();
             configComponent.configValue = configValue;
             var configKeyText = chooserObj.transform.Find("LabelLeft").GetComponent<TMP_Text>();
-            configKeyText.text = configValue.Key;
+            configKeyText.text = VHVRLocalization.LocalizeKey(configValue.Key);
             if (configValue.Key == VHVRConfig.GesturedLocomotionLabel())
             {
                 var distance = GesturedLocomotionManager.distanceTraveled;
@@ -476,19 +476,20 @@ namespace ValheimVRMod.VRCore.UI {
             Transform stepper = chooserObj.transform.Find("GUIStepper");
             var valueList = (string[])type.GetProperty("AcceptableValues").GetValue(acceptableValues);
             var currentIndex = Array.IndexOf(valueList, configValue.Value.GetSerializedValue());
+            if (currentIndex < 0) currentIndex = 0;
             var valueText = stepper.Find("Value").GetComponentInChildren<TMP_Text>();
-            valueText.text = configValue.Value.GetSerializedValue();
+            valueText.text = VHVRLocalization.LocalizeValue(configValue.Value.GetSerializedValue());
             stepper.Find("Left").GetComponent<Button>().onClick.AddListener(() =>{
-                var text = valueList[mod(--currentIndex, valueList.Length)];
-                valueText.text = text;
+                currentIndex = mod(--currentIndex, valueList.Length);
+                valueText.text = VHVRLocalization.LocalizeValue(valueList[currentIndex]);
             });
             stepper.Find("Right").GetComponent<Button>().onClick.AddListener(() => {
-                var text = valueList[mod(++currentIndex, valueList.Length)];
-                valueText.text = text;
+                currentIndex = mod(++currentIndex, valueList.Length);
+                valueText.text = VHVRLocalization.LocalizeValue(valueList[currentIndex]);
             });
 
             configComponent.saveAction = param => {
-                configValue.Value.SetSerializedValue(stepper.Find("Value").GetComponentInChildren<TMP_Text>().text);
+                configValue.Value.SetSerializedValue(valueList[mod(currentIndex, valueList.Length)]);
             };
         }
         
@@ -500,7 +501,7 @@ namespace ValheimVRMod.VRCore.UI {
             configComponent.saveAction = param => {
                 configValue.Value.SetSerializedValue(toggle.GetComponent<Toggle>().isOn ? "true" : "false");
             };
-            toggle.GetComponentInChildren<TMP_Text>().text = configValue.Key;
+            toggle.GetComponentInChildren<TMP_Text>().text = VHVRLocalization.LocalizeKey(configValue.Key);
             toggle.GetComponent<Toggle>().isOn = configValue.Value.GetSerializedValue() == "true";
             toggle.GetComponent<RectTransform>().anchoredPosition = pos + Vector2.right * 100;
         }
@@ -527,7 +528,7 @@ namespace ValheimVRMod.VRCore.UI {
             setButton.GetComponent<RectTransform>().anchorMin = Vector2.one * 0.5f;
             setButton.GetComponent<RectTransform>().anchorMax = Vector2.one * 0.5f;
             setButton.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 30);
-            setButton.GetComponentInChildren<TMP_Text>().text = "Set";
+            setButton.GetComponentInChildren<TMP_Text>().text = "Définir";
 
             setButton.GetComponent<Button>().onClick.m_PersistentCalls.Clear();
             setButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -539,7 +540,7 @@ namespace ValheimVRMod.VRCore.UI {
             resetButton.GetComponent<RectTransform>().anchorMin = Vector2.one * 0.5f;
             resetButton.GetComponent<RectTransform>().anchorMax = Vector2.one * 0.5f;
             resetButton.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 30);
-            resetButton.GetComponentInChildren<TMP_Text>().text = "Reset";
+            resetButton.GetComponentInChildren<TMP_Text>().text = "Réinitialiser";
 
             resetButton.GetComponent<Button>().onClick.m_PersistentCalls.Clear();
             resetButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -563,7 +564,7 @@ namespace ValheimVRMod.VRCore.UI {
             configComponent.saveAction = param => {};
 
             var label = transformButton.transform.Find("Label").GetComponent<TMP_Text>();
-            label.text = configValue.Key;
+            label.text = VHVRLocalization.LocalizeKey(configValue.Key);
 
             var setButton = transformButton.transform.Find("SetButton").GetComponent<Button>();
             if (!enableTransformButtons) {
@@ -688,7 +689,7 @@ namespace ValheimVRMod.VRCore.UI {
                 configValue.Value.SetSerializedValue(param);
             };
 
-            keyBinding.transform.Find("Label").GetComponent<TMP_Text>().text = configValue.Key;
+            keyBinding.transform.Find("Label").GetComponent<TMP_Text>().text = VHVRLocalization.LocalizeKey(configValue.Key);
             keyboardMouseSettings.m_keys.Add(new KeySetting {m_keyName = configValue.Key, m_keyTransform = keyBinding.GetComponent<RectTransform>()});
             keyBinding.GetComponentInChildren<Button>().onClick.AddListener(() => {
                 keyboardMouseSettings.OnOkAsync(null);

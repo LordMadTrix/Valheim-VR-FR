@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>ValheimVR-Setup</AssemblyName>
+    <ApplicationTitle>Valheim VR - Installateur Édition Française</ApplicationTitle>
+    <Company>LordMadTrix</Company>
+    <Product>Valheim VR Mod - Édition Française</Product>
+    <Version>0.9.21.0</Version>
+    <FileVersion>0.9.21.0</FileVersion>
+    <AssemblyVersion>0.9.21.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="payload.zip">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

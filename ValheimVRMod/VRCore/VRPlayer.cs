@@ -932,6 +932,7 @@ namespace ValheimVRMod.VRCore
             }
             //Add fade component to camera for transition handling
             _fadeManager = vrCam.gameObject.AddComponent<FadingManager>();
+            vrCam.gameObject.AddComponent<VRComfortVignette>();
             _instance.SetActive(true);
             vrCam.enabled = true;
             _vrCam = vrCam;

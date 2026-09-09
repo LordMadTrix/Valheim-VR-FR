@@ -32,8 +32,8 @@ namespace ValheimVRMod.VRCore.BodyTracking
             new Dictionary<BodyJoint, SteamVR_Input_Sources[]>
             {
                 { BodyJoint.Waist, new[] { SteamVR_Input_Sources.Waist } },
-                { BodyJoint.LeftFoot, new[] { SteamVR_Input_Sources.LeftFoot, SteamVR_Input_Sources.LeftAnkle } },
-                { BodyJoint.RightFoot, new[] { SteamVR_Input_Sources.RightFoot, SteamVR_Input_Sources.RightAnkle } },
+                { BodyJoint.LeftFoot, new[] { SteamVR_Input_Sources.LeftFoot } },
+                { BodyJoint.RightFoot, new[] { SteamVR_Input_Sources.RightFoot } },
             };
 
         private readonly Dictionary<BodyJoint, Transform> jointTransforms = new Dictionary<BodyJoint, Transform>();

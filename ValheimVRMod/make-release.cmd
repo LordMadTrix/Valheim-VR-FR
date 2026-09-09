@@ -104,5 +104,6 @@ if exist "%UNITY_DIR%" if not exist "%GAME_DIR%WinPixEventRuntime.dll" (
 )
 
 : this part is needed for every build
-"%SOLUTION_DIR%pdb2mdb.exe" "%TARGET_PATH%"
-Xcopy "%TARGET_DIR%ValheimVRMod.dll.mdb" "%GAME_DIR%Bepinex\plugins" /s /y /i
+if exist "%SOLUTION_DIR%pdb2mdb.exe" "%SOLUTION_DIR%pdb2mdb.exe" "%TARGET_PATH%" 2>nul
+if exist "%TARGET_DIR%ValheimVRMod.dll.mdb" Xcopy "%TARGET_DIR%ValheimVRMod.dll.mdb" "%GAME_DIR%Bepinex\plugins" /s /y /i
+exit /b 0

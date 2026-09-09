@@ -37,6 +37,7 @@ namespace ValheimVRMod.Scripts {
         private GameObject arrowAttach;
 
         private MeshRenderer hideableGlowMeshRenderer;
+        private Vector3 smoothedAimDir = Vector3.zero;
 
         private void Start() {
             instance = this;
@@ -89,6 +90,7 @@ namespace ValheimVRMod.Scripts {
             arrow.GetComponentInChildren<ZNetView>()?.Destroy();
             Destroy(arrow);
             arrow = null;
+            smoothedAimDir = Vector3.zero;
         }
 
         private void destroyPausedCosmeticArrow()
@@ -335,6 +337,7 @@ namespace ValheimVRMod.Scripts {
             currentMaxDrawPercentage = 0;
             spawnPoint = getArrowRestPosition();
             aimDir = getAimDir();
+            smoothedAimDir = Vector3.zero;
 
             if (!withoutShoot && arrow)
             {
@@ -547,7 +550,23 @@ namespace ValheimVRMod.Scripts {
         }
 
         private Vector3 getAimDir() {
-            return (getArrowRestPosition() - pullObj.transform.position).normalized;
+            Vector3 rawAim = (getArrowRestPosition() - pullObj.transform.position).normalized;
+            if (VHVRConfig.EnableBowAimSmoothing())
+            {
+                if (smoothedAimDir == Vector3.zero)
+                {
+                    smoothedAimDir = rawAim;
+                }
+                else
+                {
+                    float strength = Mathf.Clamp(VHVRConfig.BowAimSmoothingStrength(), 0.05f, 0.95f);
+                    float smoothSpeed = Mathf.Lerp(35f, 8f, strength);
+                    smoothedAimDir = Vector3.Slerp(smoothedAimDir, rawAim, smoothSpeed * Time.deltaTime).normalized;
+                }
+                return smoothedAimDir;
+            }
+            smoothedAimDir = rawAim;
+            return rawAim;
         }        
 
         private Vector3 getArrowRestPosition()

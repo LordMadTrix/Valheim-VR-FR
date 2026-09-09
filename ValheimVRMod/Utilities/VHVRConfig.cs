@@ -45,6 +45,17 @@ namespace ValheimVRMod.Utilities
         private static ConfigEntry<int> leftFootTrackerIndex;
         private static ConfigEntry<int> rightFootTrackerIndex;
 
+        // Comfort Settings
+        private static ConfigEntry<bool> enableComfortVignette;
+        private static ConfigEntry<float> comfortVignetteIntensity;
+        private static ConfigEntry<bool> comfortVignetteOnTurning;
+        private static ConfigEntry<bool> comfortVignetteOnSailing;
+        private static ConfigEntry<bool> comfortVignetteOnSprint;
+
+        // Bow Aim Smoothing
+        private static ConfigEntry<bool> enableBowAimSmoothing;
+        private static ConfigEntry<float> bowAimSmoothingStrength;
+
         // UI Settings
         private static ConfigEntry<float> overlayCurvature;
         private static ConfigEntry<float> overlayWidth;
@@ -421,7 +432,27 @@ namespace ValheimVRMod.Utilities
                     new AcceptableValueRange<int>(-1, 20)));
             rightFootTrackerIndex.SettingChanged += ((o, i) => VRPlayer.RequestPelvisCaliberation());
 
-
+            enableComfortVignette = config.Bind("Comfort",
+                                                "EnableComfortVignette",
+                                                true,
+                                                "Dynamically darkens the peripheral vision during rapid movement, turning, and sailing to eliminate VR motion sickness.");
+            comfortVignetteIntensity = config.Bind("Comfort",
+                                                   "ComfortVignetteIntensity",
+                                                   0.6f,
+                                                   new ConfigDescription("Maximum opacity of the comfort vignette.",
+                                                   new AcceptableValueRange<float>(0.1f, 1.0f)));
+            comfortVignetteOnTurning = config.Bind("Comfort",
+                                                   "ComfortVignetteOnTurning",
+                                                   true,
+                                                   "Apply comfort vignette during rapid camera turning.");
+            comfortVignetteOnSailing = config.Bind("Comfort",
+                                                   "ComfortVignetteOnSailing",
+                                                   true,
+                                                   "Apply comfort vignette while sailing on ocean waves.");
+            comfortVignetteOnSprint = config.Bind("Comfort",
+                                                  "ComfortVignetteOnSprint",
+                                                  true,
+                                                  "Apply comfort vignette while running/sprinting.");
         }
 
         private static void HipTrackerIndex_SettingChanged(object sender, EventArgs e)
@@ -927,6 +958,17 @@ namespace ValheimVRMod.Utilities
                 1.0f,
                 new ConfigDescription("Multiplier for stamina drain on bow. Reduce for less stamina drain.",
                 new AcceptableValueRange<float>(0.25f, 1.0f)));
+
+            enableBowAimSmoothing = config.Bind("Motion Control",
+                "EnableBowAimSmoothing",
+                true,
+                "Reduces micro-jitter and hand tremors when fully pulling and aiming bows.");
+
+            bowAimSmoothingStrength = config.Bind("Motion Control",
+                "BowAimSmoothingStrength",
+                0.5f,
+                new ConfigDescription("Strength of the aim stabilization filter (0.1 = subtle, 0.9 = heavy).",
+                new AcceptableValueRange<float>(0.1f, 0.9f)));
 
             //Spear Changes
             spearThrowingType = config.Bind("Motion Control",
@@ -1964,6 +2006,15 @@ namespace ValheimVRMod.Utilities
         {
             return invertXAxis.Value ? -1 : 1;
         }
+
+        public static bool EnableComfortVignette() => enableComfortVignette != null && enableComfortVignette.Value;
+        public static float ComfortVignetteIntensity() => comfortVignetteIntensity != null ? comfortVignetteIntensity.Value : 0.6f;
+        public static bool ComfortVignetteOnTurning() => comfortVignetteOnTurning != null && comfortVignetteOnTurning.Value;
+        public static bool ComfortVignetteOnSailing() => comfortVignetteOnSailing != null && comfortVignetteOnSailing.Value;
+        public static bool ComfortVignetteOnSprint() => comfortVignetteOnSprint != null && comfortVignetteOnSprint.Value;
+
+        public static bool EnableBowAimSmoothing() => enableBowAimSmoothing != null && enableBowAimSmoothing.Value;
+        public static float BowAimSmoothingStrength() => bowAimSmoothingStrength != null ? bowAimSmoothingStrength.Value : 0.5f;
 
     }
 }
