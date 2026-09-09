@@ -230,19 +230,37 @@ public partial class MainWindow : Window
 
                 Log("[OK] Fichiers du mod et de BepInEx déployés avec succès.");
 
-                // 2. Configuration personnalisée (Confort & Visée)
+                // 2. Configuration personnalisée (Confort, Visée & Profil Matériel VR)
                 string cfgPath = Path.Combine(_gamePath, "BepInEx", "config", "org.bepinex.plugins.valheimvrmod.cfg");
                 bool enableComfort = true;
                 bool enableAimSmoothing = true;
+                int hardwareProfile = 1; // 0 = Eco, 1 = Balanced, 2 = Ultra
+                string profileName = "Équilibré (Recommandé)";
 
                 Dispatcher.Invoke(() =>
                 {
                     enableComfort = ChkComfortVignette.IsChecked == true;
                     enableAimSmoothing = ChkAimSmoothing.IsChecked == true;
+                    if (RadEco.IsChecked == true)
+                    {
+                        hardwareProfile = 0;
+                        profileName = "Éco / Quest 2 (Fluide & Optimisé)";
+                    }
+                    else if (RadUltra.IsChecked == true)
+                    {
+                        hardwareProfile = 2;
+                        profileName = "Ultra / Mythique (Fidélité Maximale)";
+                    }
+                    else
+                    {
+                        hardwareProfile = 1;
+                        profileName = "Équilibré (Recommandé)";
+                    }
                 });
 
-                ConfigureModSettings(cfgPath, enableComfort, enableAimSmoothing);
-                Log("[OK] Paramètres VR personnalisés enregistrés.");
+                Log($"[i] Application du profil de performance : {profileName}");
+                ConfigureModSettings(cfgPath, enableComfort, enableAimSmoothing, hardwareProfile);
+                Log("[OK] Paramètres VR et optimisations matérielles enregistrés avec succès.");
 
                 Dispatcher.Invoke(() => PrgProgress.Value = 90);
 
@@ -289,7 +307,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ConfigureModSettings(string cfgPath, bool comfortVignette, bool aimSmoothing)
+    private void ConfigureModSettings(string cfgPath, bool comfortVignette, bool aimSmoothing, int hardwareProfile)
     {
         try
         {
@@ -299,31 +317,81 @@ public partial class MainWindow : Window
                 Directory.CreateDirectory(cfgDir);
             }
 
+            // Définition des valeurs selon le profil matériel choisi
+            // hardwareProfile: 0 = Eco / Quest 2, 1 = Balanced, 2 = Ultra
+            bool physicsSync = true;
+            bool shadowOpt = (hardwareProfile <= 1); // Ombres optimisées en Eco et Équilibré
+            bool memoryCleanup = true;
+            bool vrSharpening = true;
+            bool vrBloom = true;
+            bool amplifyOcclusion = (hardwareProfile >= 1); // AO désactivée en Eco pour préserver les FPS
+            string buildingLOD = (hardwareProfile == 0) ? "1.5" : "1.0";
+
+            var desiredSettings = new Dictionary<string, (string section, string value)>
+            {
+                { "EnableComfortVignette", ("Comfort", comfortVignette.ToString().ToLower()) },
+                { "EnableBowAimSmoothing", ("Motion Control", aimSmoothing.ToString().ToLower()) },
+                { "PhysicsSyncEnabled", ("Graphics", physicsSync.ToString().ToLower()) },
+                { "ShadowOptimizationEnabled", ("Graphics", shadowOpt.ToString().ToLower()) },
+                { "MemoryCleanupEnabled", ("General", memoryCleanup.ToString().ToLower()) },
+                { "VRSharpeningEnabled", ("Graphics", vrSharpening.ToString().ToLower()) },
+                { "VRAntiGlareBloomEnabled", ("Graphics", vrBloom.ToString().ToLower()) },
+                { "UseAmplifyOcclusion", ("Graphics", amplifyOcclusion.ToString().ToLower()) },
+                { "BuildingPieceDetailReductionFactor", ("Graphics", buildingLOD) }
+            };
+
             if (File.Exists(cfgPath))
             {
                 var lines = File.ReadAllLines(cfgPath).ToList();
+                var handledKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
                 for (int i = 0; i < lines.Count; i++)
                 {
-                    if (lines[i].Trim().StartsWith("ComfortVignetteEnabled"))
+                    string trimmed = lines[i].Trim();
+                    foreach (var kvp in desiredSettings)
                     {
-                        lines[i] = $"ComfortVignetteEnabled = {comfortVignette.ToString().ToLower()}";
-                    }
-                    else if (lines[i].Trim().StartsWith("BowAimSmoothing"))
-                    {
-                        lines[i] = $"BowAimSmoothing = {aimSmoothing.ToString().ToLower()}";
+                        if (trimmed.StartsWith(kvp.Key, StringComparison.OrdinalIgnoreCase) && trimmed.Contains('='))
+                        {
+                            lines[i] = $"{kvp.Key} = {kvp.Value.value}";
+                            handledKeys.Add(kvp.Key);
+                            break;
+                        }
                     }
                 }
+
+                // Ajout des clés manquantes à la fin si nécessaire
+                foreach (var kvp in desiredSettings)
+                {
+                    if (!handledKeys.Contains(kvp.Key))
+                    {
+                        lines.Add("");
+                        lines.Add($"[{kvp.Value.section}]");
+                        lines.Add($"{kvp.Key} = {kvp.Value.value}");
+                    }
+                }
+
                 File.WriteAllLines(cfgPath, lines, Encoding.UTF8);
             }
             else
             {
-                // Création initiale avec sections francisées
+                // Création initiale avec sections francisées / standard BepInEx
                 var sb = new StringBuilder();
-                sb.AppendLine("[Confort]");
-                sb.AppendLine($"ComfortVignetteEnabled = {comfortVignette.ToString().ToLower()}");
+                sb.AppendLine("[Comfort]");
+                sb.AppendLine($"EnableComfortVignette = {comfortVignette.ToString().ToLower()}");
                 sb.AppendLine();
-                sb.AppendLine("[Commandes]");
-                sb.AppendLine($"BowAimSmoothing = {aimSmoothing.ToString().ToLower()}");
+                sb.AppendLine("[Motion Control]");
+                sb.AppendLine($"EnableBowAimSmoothing = {aimSmoothing.ToString().ToLower()}");
+                sb.AppendLine();
+                sb.AppendLine("[Graphics]");
+                sb.AppendLine($"PhysicsSyncEnabled = {physicsSync.ToString().ToLower()}");
+                sb.AppendLine($"ShadowOptimizationEnabled = {shadowOpt.ToString().ToLower()}");
+                sb.AppendLine($"VRSharpeningEnabled = {vrSharpening.ToString().ToLower()}");
+                sb.AppendLine($"VRAntiGlareBloomEnabled = {vrBloom.ToString().ToLower()}");
+                sb.AppendLine($"UseAmplifyOcclusion = {amplifyOcclusion.ToString().ToLower()}");
+                sb.AppendLine($"BuildingPieceDetailReductionFactor = {buildingLOD}");
+                sb.AppendLine();
+                sb.AppendLine("[General]");
+                sb.AppendLine($"MemoryCleanupEnabled = {memoryCleanup.ToString().ToLower()}");
                 File.WriteAllText(cfgPath, sb.ToString(), Encoding.UTF8);
             }
         }

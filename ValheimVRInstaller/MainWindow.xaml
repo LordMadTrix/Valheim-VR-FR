@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Valheim VR - Installateur Édition Française"
         Icon="app.ico"
-        Height="620" Width="820"
+        Height="660" Width="820"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
         Background="#0D1015"
@@ -98,6 +98,15 @@
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Margin" Value="0,4"/>
         </Style>
+
+        <!-- RadioButton Nordique -->
+        <Style TargetType="RadioButton">
+            <Setter Property="Foreground" Value="#E0DACB"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Margin" Value="0,0,20,0"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
     </Window.Resources>
 
     <Border BorderBrush="#685018" BorderThickness="2" CornerRadius="0">
@@ -108,7 +117,9 @@
                 <RowDefinition Height="Auto"/>
                 <!-- Sélection Dossier -->
                 <RowDefinition Height="Auto"/>
-                <!-- Options -->
+                <!-- Options Modules & Raccourcis -->
+                <RowDefinition Height="Auto"/>
+                <!-- Profil Matériel VR -->
                 <RowDefinition Height="Auto"/>
                 <!-- Barre de progression -->
                 <RowDefinition Height="*"/>
@@ -126,7 +137,7 @@
             </StackPanel>
 
             <!-- 2. Sélection Répertoire Valheim -->
-            <Border Grid.Row="1" Background="#141820" BorderBrush="#3D341D" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12">
+            <Border Grid.Row="1" Background="#141820" BorderBrush="#3D341D" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -141,7 +152,7 @@
             </Border>
 
             <!-- 3. Options VR -->
-            <Border Grid.Row="2" Background="#141820" BorderBrush="#3D341D" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,12">
+            <Border Grid.Row="2" Background="#141820" BorderBrush="#3D341D" BorderThickness="1" CornerRadius="4" Padding="12" Margin="0,0,0,10">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -160,20 +171,36 @@
                 </Grid>
             </Border>
 
-            <!-- 4. Barre de progression -->
-            <StackPanel Grid.Row="3" Margin="0,0,0,8">
+            <!-- 4. Profil Matériel VR (Performance) -->
+            <Border Grid.Row="3" Background="#141820" BorderBrush="#3D341D" BorderThickness="1" CornerRadius="4" Padding="10,8" Margin="0,0,0,10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="PROFIL MATÉRIEL VR :" FontSize="11" FontWeight="Bold" Foreground="#9E8746" VerticalAlignment="Center" Margin="5,0,20,0"/>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <RadioButton x:Name="RadEco" Content="🟢 Éco / Quest 2 (Fluide)" ToolTip="Ombres 40m, 2 cascades, sans AO lourde. Recommandé pour Quest 2 en AirLink ou GTX 1060-1660 / RTX 2060."/>
+                        <RadioButton x:Name="RadBalanced" Content="🟡 Équilibré (Recommandé)" IsChecked="True" ToolTip="Ombres 60m, 2 cascades, 16x anisotrope, sync 90Hz. Recommandé pour Quest 3, Index, RTX 3060-4070."/>
+                        <RadioButton x:Name="RadUltra" Content="🔴 Ultra / Mythique" ToolTip="Ombres 90m, cascades complètes, textures max. Pour casques haute résolution et GPU RTX 3080/4080+."/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- 5. Barre de progression -->
+            <StackPanel Grid.Row="4" Margin="0,0,0,8">
                 <ProgressBar x:Name="PrgProgress" Height="8" Minimum="0" Maximum="100" Value="0" Background="#141820" Foreground="#D4AF37" BorderBrush="#3D341D"/>
             </StackPanel>
 
-            <!-- 5. Console de logs -->
-            <Border Grid.Row="4" Background="#090B0E" BorderBrush="#252A33" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,12">
+            <!-- 6. Console de logs -->
+            <Border Grid.Row="5" Background="#090B0E" BorderBrush="#252A33" BorderThickness="1" CornerRadius="4" Padding="8" Margin="0,0,0,12">
                 <ScrollViewer x:Name="Scroller" VerticalScrollBarVisibility="Auto">
                     <TextBox x:Name="TxtLogs" Background="Transparent" Foreground="#C8C2B3" FontFamily="Consolas, Lucida Console" FontSize="11" BorderThickness="0" TextWrapping="Wrap" IsReadOnly="True"/>
                 </ScrollViewer>
             </Border>
 
-            <!-- 6. Boutons d'actions -->
-            <Grid Grid.Row="5">
+            <!-- 7. Boutons d'actions -->
+            <Grid Grid.Row="6">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>

@@ -6,14 +6,14 @@
 
 <br/>
 
-[![Dernière Release](https://img.shields.io/badge/Release-v0.9.22--FR-gold.svg?style=for-the-badge&logo=github)](https://github.com/LordMadTrix/Valheim-VR-FR/releases)
+[![Dernière Release](https://img.shields.io/badge/Release-v0.9.23--FR-gold.svg?style=for-the-badge&logo=github)](https://github.com/LordMadTrix/Valheim-VR-FR/releases)
 [![Compatibilité Valheim](https://img.shields.io/badge/Valheim-Unity%206%20%7C%20Ashlands%20%7C%20Bog%20Witch-blue.svg?style=for-the-badge&logo=steam)](https://store.steampowered.com/app/892970/Valheim/)
 [![Langue](https://img.shields.io/badge/Langue-100%25%20Fran%C3%A7ais-green.svg?style=for-the-badge)](#-7-traduction-int%C3%A9grale-en-fran%C3%A7ais)
 [![OpenVR / SteamVR](https://img.shields.io/badge/VR-SteamVR%20%7C%20OpenVR-orange.svg?style=for-the-badge&logo=steamvr)](https://store.steampowered.com/app/250820/SteamVR/)
 [![Licence](https://img.shields.io/badge/Licence-GPL--3.0-purple.svg?style=for-the-badge)](LICENSE)
 
 ### ⚔️ Plongez dans le dixième monde nordique en totale immersion à 360° en Réalité Virtuelle native ⚔️
-*Version enrichie et francisée avec installateur graphique dédié, consommation physique, confort anti-cinétose, visée stabilisée et mode assis.*
+*Version enrichie et francisée avec installateur graphique dédié, profils matériels, synchronisation 90Hz, purge VRAM, consommation physique, confort anti-cinétose, visée stabilisée et mode assis.*
 
 [📦 Télécharger l'Installateur (Setup .exe)](https://github.com/LordMadTrix/Valheim-VR-FR/releases/latest) • [🎮 Commandes en VR](#-commandes-et-gestes-en-jeu) • [🛠️ Compilation](#-guide-de-compilation)
 
@@ -21,7 +21,7 @@
 
 ---
 
-## 🌟 Nouveautés Majeures de l'Édition Française (v0.9.22)
+## 🌟 Nouveautés Majeures de l'Édition Française (v0.9.23)
 
 <table>
 <tr>
@@ -29,6 +29,7 @@
 
 ### 🥽 1. Installateur Graphique Dédié (`ValheimVR-Setup.exe`)
 * **Design Viking & Nordique** : Interface soignée reprenant les teintes sombres ardoise (`#0D1015`) et dorées de Valheim avec icône applicative exclusive.
+* **Sélecteur de Profils Matériels** : Choisissez en 1 clic entre **Éco / Quest 2**, **Équilibré** ou **Ultra / Mythique**.
 * **Détection Automatique** : Scanne instantanément vos bibliothèques Steam multi-disques (`C:\`, `D:\`, `E:\`...).
 * **Déploiement en 1 Clic** : Installe BepInExPack, les plugins natifs OpenVR 64-bit, les profils SteamVR et le mod compilé.
 * **100% Réversible** : Un bouton *Restaurer Vanilla* permet de repasser en version écran plat classique à tout moment sans toucher à vos personnages ni sauvegardes.
@@ -36,27 +37,30 @@
 </td>
 <td width="50%">
 
-### 🍻 2. Consommation Gestuelle Physique
-* **Manger & Boire Naturellement** : Approchez physiquement votre main tenant de la viande, une potion ou une chope d'hydromel vers votre casque VR pour la consommer !
-* **Feedback Sensoriel** : Vibration haptique progressive au rapprochement de la bouche et confirmation d'ingestion.
-* **Support bHaptics** : Compatible avec les vestes haptiques pour ressentir la nourriture et les boissons.
-* **Anti-Faux Positif** : Temporisation de sécurité ($0.32\text{ s}$) pour éviter toute utilisation involontaire au combat.
+### ⚡ 2. Optimisations Extrêmes & Fluidité VR
+* **Synchronisation Physique 90Hz** : Alignement de la physique (`Time.fixedDeltaTime = 1f / 90f`) pour éliminer tout micro-bégaiement (micro-stuttering) lors des déplacements.
+* **Culling Intelligent d'Ombres** : Gain de **+15 à 25 FPS** dans les forêts denses et grands villages vikings grâce à l'optimisation des cascades d'ombres stéréo.
+* **Purge VRAM Automatique aux Portails** : Déchargement instantané de la mémoire lors des téléportations sous écran noir pour éradiquer les fuites de mémoire et crashs.
+* **Textures Ultra Nettes** : Filtrage anisotrope forcé 16x pour un piqué d'image incomparable sur les runes, le bois et la pierre.
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-### 🛋️ 3. Mode Assis & Recalibration Instantanée
-* **Mode Assis ("Seated Mode")** : Jouez détendu depuis votre canapé ou fauteuil de bureau tout en conservant une taille normale de viking debout dans le monde du jeu grâce à la compensation de hauteur virtuelle.
-* **Recalibration Rapide (`L3 + R3`)** : Maintenez les deux joysticks enfoncés pendant 1 seconde pour recentrer instantanément le sol, votre orientation et votre hauteur sans jamais ouvrir de menu.
+### 🍻 3. Consommation Gestuelle Physique
+* **Manger & Boire Naturellement** : Approchez physiquement votre main tenant de la viande, une potion ou une chope d'hydromel vers votre casque VR pour la consommer !
+* **Feedback Sensoriel** : Vibration haptique progressive au rapprochement de la bouche et confirmation d'ingestion.
+* **Support bHaptics** : Compatible avec les vestes haptiques pour ressentir la nourriture et les boissons.
+* **Anti-Faux Positif** : Temporisation de sécurité ($0.32\text{ s}$) pour éviter toute utilisation involontaire au combat.
 
 </td>
 <td width="50%">
 
-### 🎯 4. Optimiseur de Rendu & Clarté Visuelle
-* **Textures Ultra Nettes** : Filtrage anisotrope forcé 16x pour un piqué d'image incomparable sur les textures de bois, pierre, herbe et inscriptions runiques.
-* **Atténuation de l'Éblouissement Solaire** : Adoucissement automatique du bloom et des halos lumineux violents pour préserver le confort visuel dans les lentilles VR (Fresnel & Pancake).
+### 🛋️ 4. Mode Assis & Recalibration Instantanée
+* **Mode Assis ("Seated Mode")** : Jouez détendu depuis votre canapé ou fauteuil de bureau tout en conservant une taille normale de viking debout dans le monde du jeu grâce à la compensation de hauteur virtuelle.
+* **Recalibration Rapide (`L3 + R3`)** : Maintenez les deux joysticks enfoncés pendant 1 seconde pour recentrer instantanément le sol, votre orientation et votre hauteur sans jamais ouvrir de menu.
+* **Atténuation de l'Éblouissement Solaire** : Adoucissement automatique du bloom violent pour préserver vos yeux dans les lentilles VR.
 
 </td>
 </tr>
@@ -100,7 +104,7 @@ Conçue spécifiquement pour les joueurs sensibles au mal des transports en réa
 1. Téléchargez **[`ValheimVR-Setup.exe`](https://github.com/LordMadTrix/Valheim-VR-FR/releases/latest)**.
 2. Lancez l'exécutable (aux couleurs de Valheim).
 3. Le chemin de votre jeu Valheim est détecté automatiquement (vous pouvez cliquer sur *Parcourir...* si nécessaire).
-4. Cochez les options souhaitées (Vignette anti-cinétose, Lissage de visée, Raccourci Bureau).
+4. Choisissez votre profil matériel (**Éco**, **Équilibré** ou **Ultra**) et vos options (Vignette anti-cinétose, Lissage de visée, Raccourci Bureau).
 5. Cliquez sur **⚔️ INSTALLER VALHEIM VR (FR)**.
 6. Allumez votre casque, lancez **SteamVR**, puis cliquez sur **🥽 LANCER EN VR** !
 

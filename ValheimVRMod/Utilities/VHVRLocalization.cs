@@ -154,7 +154,10 @@ namespace ValheimVRMod.Utilities
             { "SeatedHeightOffset", "Hauteur virtuelle mode assis (m)" },
             { "QuickRecenterEnabled", "Recalibration rapide (L3 + R3)" },
             { "VRSharpeningEnabled", "Netteté des textures VR (Anisotropie)" },
-            { "VRAntiGlareBloomEnabled", "Atténuation de l'éblouissement solaire" }
+            { "VRAntiGlareBloomEnabled", "Atténuation de l'éblouissement solaire" },
+            { "PhysicsSyncEnabled", "Synchronisation physique 90Hz (Anti-saccades)" },
+            { "ShadowOptimizationEnabled", "Optimisation ombres & cascades VR" },
+            { "MemoryCleanupEnabled", "Purge VRAM automatique aux portails" }
         };
 
         private static readonly Dictionary<string, string> Descriptions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -172,6 +175,9 @@ namespace ValheimVRMod.Utilities
             { "QuickRecenterEnabled", "Maintenir les deux joysticks enfoncés (L3 + R3) pendant 1 seconde réinitialise instantanément votre hauteur et orientation." },
             { "VRSharpeningEnabled", "Force le filtrage anisotrope 16x pour rendre les textures et inscriptions runiques ultra nettes dans le casque VR." },
             { "VRAntiGlareBloomEnabled", "Adoucit les halos lumineux intenses et l'éblouissement du soleil pour préserver le confort visuel." },
+            { "PhysicsSyncEnabled", "Cale le moteur physique Unity sur 90Hz (11.1ms) pour éliminer les micro-saccades lors de la marche et des mouvements de tête." },
+            { "ShadowOptimizationEnabled", "Réduit les calculs d'ombres superflus en VR stéréo (distance max 60m, 2 cascades), offrant un gain de 15 à 25 FPS en forêt et grandes bases." },
+            { "MemoryCleanupEnabled", "Purge automatiquement la mémoire vive et vidéo inutilisée lors de la traversée de portails sous écran noir pour éviter les fuites de mémoire et crashs." },
             { "RecenterOnStart", "Recentrer automatiquement l'affichage du casque VR vers l'avant au chargement de la partie." },
             { "SnapTurnEnabled", "Tourne par crans angulaires au lieu d'une rotation continue pour préserver le confort en VR." },
             { "SnapTurnAngle", "Nombre de degrés pivotés à chaque impulsion du stick analogique (ex: 30°, 45°)." },
