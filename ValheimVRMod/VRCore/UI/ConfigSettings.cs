@@ -22,7 +22,7 @@ namespace ValheimVRMod.VRCore.UI {
         private const bool ENABLE_VHVR_SETTINGS_DIALOG = true;
         
         private const float MENU_ENTRY_HEIGHT = 40;
-        private const string MenuName = "VHVR";
+        public const string MenuName = "PARAMÈTRES VR";
         private const int TabButtonWidth = 100;
         
         private static GameObject tabButtonPrefab;
@@ -30,12 +30,12 @@ namespace ValheimVRMod.VRCore.UI {
         private static GameObject togglePrefab;
         private static GameObject sliderPrefab;
         private static GameObject chooserPrefab;
-        private static GameObject settingsPrefab;
+        public static GameObject settingsPrefab;
         private static GameObject keyBindingPrefab;
         private static GameObject transformButtonPrefab;
         private static GameObject settings;
         private static Transform menuList;
-        private static Transform menuParent;
+        public static Transform menuParent;
         private static ConfigComponent tmpComfigComponent;
         private static bool enableTransformButtons;
         private static int tabCounter;
@@ -55,7 +55,71 @@ namespace ValheimVRMod.VRCore.UI {
 
         public static bool isVHVRClone(Component component)
         {
-            return component.GetComponentInParent<SettingsCloneMarker>(includeInactive: true) != null;
+            return component != null && component.GetComponentInParent<SettingsCloneMarker>(includeInactive: true) != null;
+        }
+
+        /// <summary>
+        /// Injecte un bouton stylisé 'Options VR' directement dans la boîte de dialogue 'Paramètres' native de Valheim.
+        /// </summary>
+        public static void InjectVrButtonIntoVanillaSettings(Settings vanillaSettings)
+        {
+            if (vanillaSettings == null || isVHVRClone(vanillaSettings))
+            {
+                return;
+            }
+
+            Transform panel = vanillaSettings.transform.Find("Panel");
+            if (panel == null)
+            {
+                return;
+            }
+
+            if (panel.Find("Button_VRSettings") != null)
+            {
+                return;
+            }
+
+            if (settingsPrefab == null)
+            {
+                settingsPrefab = vanillaSettings.gameObject;
+            }
+            if (menuParent == null)
+            {
+                menuParent = vanillaSettings.transform.parent;
+            }
+
+            Transform backBtn = panel.Find("Back");
+            if (backBtn == null)
+            {
+                return;
+            }
+
+            Transform vrBtn = GameObject.Instantiate(backBtn, panel);
+            vrBtn.name = "Button_VRSettings";
+
+            var txt = vrBtn.GetComponentInChildren<TMP_Text>();
+            if (txt != null)
+            {
+                txt.text = "🥽 Options VR";
+            }
+
+            Button btn = vrBtn.GetComponent<Button>();
+            btn.onClick.RemoveAllListeners();
+            btn.onClick.m_PersistentCalls?.Clear();
+            btn.onClick.AddListener(() =>
+            {
+                createModSettings();
+            });
+
+            RectTransform rt = vrBtn.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchorMin = new Vector2(1f, 1f);
+                rt.anchorMax = new Vector2(1f, 1f);
+                rt.pivot = new Vector2(1f, 1f);
+                rt.anchoredPosition = new Vector2(-40, -32);
+                rt.sizeDelta = new Vector2(180, 42);
+            }
         }
  
         /// <summary>
@@ -71,13 +135,6 @@ namespace ValheimVRMod.VRCore.UI {
                         AddMenuEntry(MenuName, menuEntry, Vector2.zero, createModSettings);
                         addedMenuEntryCount++;
                     }
-
-                    AddMenuEntry("Screenshot", menuEntry, Vector2.up * MENU_ENTRY_HEIGHT * addedMenuEntryCount, CaptureScreenshot);
-                    addedMenuEntryCount++;
-
-                    AddMenuEntry("Toggle auto-pickup", menuEntry, Vector2.up * MENU_ENTRY_HEIGHT * addedMenuEntryCount, ToggleAutoPickup);
-                    addedMenuEntryCount++;
-
                 }
                 else if (addedMenuEntryCount > 0) {
                     var rectTransform = menuList.GetChild(i).GetComponent<RectTransform>();
@@ -158,7 +215,16 @@ namespace ValheimVRMod.VRCore.UI {
         /// <summary>
         /// Make Copy of ingame Settings, clean up all existing tabs, then iterate bepinex config
         /// </summary>
-        private static void createModSettings() {
+        public static void createModSettings() {
+            if (settingsPrefab == null)
+            {
+                LogUtils.LogWarning("settingsPrefab is null, cannot open VR settings!");
+                return;
+            }
+            if (settings != null)
+            {
+                GameObject.Destroy(settings);
+            }
             settings = Object.Instantiate(settingsPrefab, menuParent);
             settings.AddComponent<SettingsCloneMarker>();
             settings.transform.Find("Panel").Find("Title").GetComponent<TMP_Text>().text = "Configuration VR (VHVR)";
@@ -203,7 +269,7 @@ namespace ValheimVRMod.VRCore.UI {
             setupOkAndBack(settings.transform.Find("Panel"));
 
             tabButtons.GetComponent<TabHandler>().SetActiveTab(0);
-            keyboardMouseSettings.UpdateBindings();
+            keyboardMouseSettings?.UpdateBindings();
         }
 
         // Adds listeners for ok and back buttons

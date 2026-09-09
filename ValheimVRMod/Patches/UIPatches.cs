@@ -800,6 +800,16 @@ namespace ValheimVRMod.Patches
             }
             ConfigSettings.instantiate(__instance.m_menuDialog, __instance.transform, __instance.m_settingsPrefab, enableTransformButtons: true);
         }
+    }
+
+    [HarmonyPatch(typeof(Settings), "Awake")]
+    class PatchSettingsAwake {
+        public static void Postfix(Settings __instance) {
+            if (VHVRConfig.NonVrPlayer() || ConfigSettings.isVHVRClone(__instance)) {
+                return;
+            }
+            ConfigSettings.InjectVrButtonIntoVanillaSettings(__instance);
+        }
     }    
     
     [HarmonyPatch(typeof(KeyboardMouseSettings), "UpdateBindings")]

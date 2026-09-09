@@ -40,16 +40,17 @@ namespace ValheimVRMod.Scripts.PostProcessing
         }
 
         /// <summary>
-        /// Aligne la simulation physique Unity sur la fréquence VR (90 Hz) pour éliminer les micro-saccades.
+        /// Aligne la simulation physique Unity sur la fréquence du casque VR pour éliminer les micro-saccades.
         /// </summary>
         public static void ApplyPhysicsSync()
         {
             if (VHVRConfig.IsPhysicsSyncEnabled())
             {
-                // Fréquence physique calée sur 90Hz (11.1ms) au lieu du 50Hz (20ms) par défaut
-                Time.fixedDeltaTime = 1f / 90f;
+                int targetHz = VHVRConfig.GetVRTargetPhysicsHz();
+                if (targetHz < 60) targetHz = 90;
+                Time.fixedDeltaTime = 1f / (float)targetHz;
                 Time.maximumDeltaTime = 0.05f;
-                LogUtils.LogInfo("Physics Sync VR activé : simulation physique calée à 90 Hz (11.1 ms).");
+                LogUtils.LogInfo($"Physics Sync VR activé : simulation physique calée à {targetHz} Hz ({1000f / targetHz:F1} ms).");
             }
         }
 
@@ -72,10 +73,10 @@ namespace ValheimVRMod.Scripts.PostProcessing
         {
             if (VHVRConfig.IsShadowOptimizationEnabled())
             {
-                // Distance d'ombres stabilisée à 60m (évite de calculer les ombres lointaines inutiles en VR)
-                if (QualitySettings.shadowDistance > 60f)
+                float maxDist = VHVRConfig.GetVRMaxShadowDistance();
+                if (QualitySettings.shadowDistance > maxDist)
                 {
-                    QualitySettings.shadowDistance = 60f;
+                    QualitySettings.shadowDistance = maxDist;
                 }
                 // 2 cascades au lieu de 4 divise par deux le travail de shadow mapping stéréo
                 QualitySettings.shadowCascades = 2;

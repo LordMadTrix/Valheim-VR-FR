@@ -85,8 +85,9 @@ namespace ValheimVRMod.Scripts
             }
 
             float distance = Vector3.Distance(handTransform.position, mouthPosition);
+            float threshold = VHVRConfig.GetMouthProximityDistance();
 
-            if (distance <= MOUTH_DISTANCE_THRESHOLD)
+            if (distance <= threshold)
             {
                 holdTimer += Time.deltaTime;
 
@@ -119,6 +120,11 @@ namespace ValheimVRMod.Scripts
 
         private void ExecuteHaptic(bool isRightHand, float duration, float frequency, float amplitude)
         {
+            if (!VHVRConfig.IsHapticConsumptionFeedbackEnabled())
+            {
+                return;
+            }
+
             try
             {
                 var hand = isRightHand ? VRPlayer.rightHand : VRPlayer.leftHand;

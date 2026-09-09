@@ -68,8 +68,14 @@ namespace ValheimVRMod.Utilities
         private static ConfigEntry<bool> enableVRSharpening;
         private static ConfigEntry<bool> enableVRAntiGlareBloom;
         private static ConfigEntry<bool> enablePhysicsSync;
+        private static ConfigEntry<int> vrTargetPhysicsHz;
         private static ConfigEntry<bool> enableShadowOptimization;
+        private static ConfigEntry<float> vrMaxShadowDistance;
         private static ConfigEntry<bool> enableMemoryCleanup;
+
+        // Gestures & Feedback
+        private static ConfigEntry<bool> hapticConsumptionFeedback;
+        private static ConfigEntry<float> mouthProximityDistance;
 
         // UI Settings
         private static ConfigEntry<float> overlayCurvature;
@@ -469,10 +475,21 @@ namespace ValheimVRMod.Utilities
                                                   true,
                                                   "Apply comfort vignette while running/sprinting.");
 
-            enablePhysicalConsumption = config.Bind("MotionControls",
+            enablePhysicalConsumption = config.Bind("Motion Control",
                                                     "PhysicalConsumptionEnabled",
                                                     true,
                                                     "Allows eating food or drinking potions by bringing your hand to your mouth/headset.");
+
+            hapticConsumptionFeedback = config.Bind("Motion Control",
+                                                    "HapticConsumptionFeedback",
+                                                    true,
+                                                    "Vibrates controllers progressively when food/drink is near your mouth.");
+
+            mouthProximityDistance = config.Bind("Motion Control",
+                                                 "MouthProximityDistance",
+                                                 0.22f,
+                                                 new ConfigDescription("Maximum distance (in meters) between hand and headset to trigger eating/drinking.",
+                                                 new AcceptableValueRange<float>(0.10f, 0.40f)));
 
             enableSeatedMode = config.Bind("General",
                                            "SeatedModeEnabled",
@@ -503,12 +520,24 @@ namespace ValheimVRMod.Utilities
             enablePhysicsSync = config.Bind("Graphics",
                                             "PhysicsSyncEnabled",
                                             true,
-                                            "Locks physics simulation at 90Hz to completely eliminate locomotion and camera micro-stutters.");
+                                            "Locks physics simulation at your headset refresh rate to eliminate micro-stutters.");
+
+            vrTargetPhysicsHz = config.Bind("Graphics",
+                                            "VRTargetPhysicsHz",
+                                            90,
+                                            new ConfigDescription("Physics refresh rate (Hz) matching your VR headset (72, 80, 90, 120, 144).",
+                                            new AcceptableValueRange<int>(60, 144)));
 
             enableShadowOptimization = config.Bind("Graphics",
                                                    "ShadowOptimizationEnabled",
                                                    true,
-                                                   "Optimizes shadow cascade distance in VR stereo for up to +25 FPS in dense forests and bases.");
+                                                   "Optimizes shadow cascades in VR stereo for up to +25 FPS in dense forests and bases.");
+
+            vrMaxShadowDistance = config.Bind("Graphics",
+                                              "VRMaxShadowDistance",
+                                              60f,
+                                              new ConfigDescription("Maximum shadow render distance in meters when shadow optimization is enabled.",
+                                              new AcceptableValueRange<float>(20f, 150f)));
 
             enableMemoryCleanup = config.Bind("General",
                                               "MemoryCleanupEnabled",
@@ -2088,8 +2117,13 @@ namespace ValheimVRMod.Utilities
         public static bool IsVRAntiGlareBloomEnabled() => enableVRAntiGlareBloom != null && enableVRAntiGlareBloom.Value;
 
         public static bool IsPhysicsSyncEnabled() => enablePhysicsSync != null && enablePhysicsSync.Value;
+        public static int GetVRTargetPhysicsHz() => vrTargetPhysicsHz != null ? vrTargetPhysicsHz.Value : 90;
         public static bool IsShadowOptimizationEnabled() => enableShadowOptimization != null && enableShadowOptimization.Value;
+        public static float GetVRMaxShadowDistance() => vrMaxShadowDistance != null ? vrMaxShadowDistance.Value : 60f;
         public static bool IsMemoryCleanupEnabled() => enableMemoryCleanup != null && enableMemoryCleanup.Value;
+
+        public static bool IsHapticConsumptionFeedbackEnabled() => hapticConsumptionFeedback != null && hapticConsumptionFeedback.Value;
+        public static float GetMouthProximityDistance() => mouthProximityDistance != null ? mouthProximityDistance.Value : 0.22f;
 
     }
 }

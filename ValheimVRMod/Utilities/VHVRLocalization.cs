@@ -155,9 +155,13 @@ namespace ValheimVRMod.Utilities
             { "QuickRecenterEnabled", "Recalibration rapide (L3 + R3)" },
             { "VRSharpeningEnabled", "Netteté des textures VR (Anisotropie)" },
             { "VRAntiGlareBloomEnabled", "Atténuation de l'éblouissement solaire" },
-            { "PhysicsSyncEnabled", "Synchronisation physique 90Hz (Anti-saccades)" },
+            { "PhysicsSyncEnabled", "Synchronisation physique VR (Anti-saccades)" },
+            { "VRTargetPhysicsHz", "Fréquence physique VR cible (Hz)" },
             { "ShadowOptimizationEnabled", "Optimisation ombres & cascades VR" },
-            { "MemoryCleanupEnabled", "Purge VRAM automatique aux portails" }
+            { "VRMaxShadowDistance", "Distance max des ombres VR (m)" },
+            { "MemoryCleanupEnabled", "Purge VRAM automatique aux portails" },
+            { "HapticConsumptionFeedback", "Vibration haptique à la consommation" },
+            { "MouthProximityDistance", "Distance d'activation bouche/casque (m)" }
         };
 
         private static readonly Dictionary<string, string> Descriptions = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -170,13 +174,17 @@ namespace ValheimVRMod.Utilities
             { "EnableBowAimSmoothing", "Filtre les micro-tremblements physiques des manettes VR lorsque vous tendez l'arc pour assurer des tirs précis à longue distance." },
             { "BowAimSmoothingStrength", "Intensité du filtre stabilisateur (0.1 = faible, 0.9 = stabilisation très forte)." },
             { "PhysicalConsumptionEnabled", "Permet de consommer de la nourriture ou boire une potion en approchant physiquement la main de votre casque VR." },
+            { "HapticConsumptionFeedback", "Déclenche une vibration progressive dans la manette lorsque vous approchez l'aliment de votre bouche." },
+            { "MouthProximityDistance", "Distance maximale en mètres entre la manette et le casque VR pour valider la consommation physique (par défaut 0.22m)." },
             { "SeatedModeEnabled", "Active la compensation de hauteur pour jouer confortablement assis tout en conservant une taille normale en jeu." },
             { "SeatedHeightOffset", "Décalage vertical virtuel appliqué lorsque le mode assis est activé (par défaut +0.50m)." },
             { "QuickRecenterEnabled", "Maintenir les deux joysticks enfoncés (L3 + R3) pendant 1 seconde réinitialise instantanément votre hauteur et orientation." },
             { "VRSharpeningEnabled", "Force le filtrage anisotrope 16x pour rendre les textures et inscriptions runiques ultra nettes dans le casque VR." },
             { "VRAntiGlareBloomEnabled", "Adoucit les halos lumineux intenses et l'éblouissement du soleil pour préserver le confort visuel." },
-            { "PhysicsSyncEnabled", "Cale le moteur physique Unity sur 90Hz (11.1ms) pour éliminer les micro-saccades lors de la marche et des mouvements de tête." },
-            { "ShadowOptimizationEnabled", "Réduit les calculs d'ombres superflus en VR stéréo (distance max 60m, 2 cascades), offrant un gain de 15 à 25 FPS en forêt et grandes bases." },
+            { "PhysicsSyncEnabled", "Cale le moteur physique Unity sur la fréquence de rafraîchissement de votre casque VR pour éliminer les micro-saccades." },
+            { "VRTargetPhysicsHz", "Fréquence cible de la boucle physique (72, 80, 90, 120, 144 Hz) correspondant au mode de fonctionnement de votre casque VR." },
+            { "ShadowOptimizationEnabled", "Réduit les calculs d'ombres superflus en VR stéréo (2 cascades), offrant un gain de 15 à 25 FPS en forêt et grandes bases." },
+            { "VRMaxShadowDistance", "Distance maximale d'affichage des ombres en réalité virtuelle (60m par défaut, jusqu'à 150m pour GPU très puissants)." },
             { "MemoryCleanupEnabled", "Purge automatiquement la mémoire vive et vidéo inutilisée lors de la traversée de portails sous écran noir pour éviter les fuites de mémoire et crashs." },
             { "RecenterOnStart", "Recentrer automatiquement l'affichage du casque VR vers l'avant au chargement de la partie." },
             { "SnapTurnEnabled", "Tourne par crans angulaires au lieu d'une rotation continue pour préserver le confort en VR." },
