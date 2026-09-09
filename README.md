@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Bannière Valheim VR](docs/banner.png)
+<img src="https://raw.githubusercontent.com/LordMadTrix/Valheim-VR-FR/master/docs/banner.png" alt="Bannière Valheim VR" width="100%" />
 
 [![Release](https://img.shields.io/badge/Release-v0.9.22--FR-gold.svg?style=for-the-badge&logo=github)](https://github.com/LordMadTrix/Valheim-VR-FR/releases)
 [![Valheim Compatibility](https://img.shields.io/badge/Valheim-Unity%206%20%7C%20Ashlands%20%7C%20Bog%20Witch-blue.svg?style=for-the-badge&logo=steam)](https://store.steampowered.com/app/892970/Valheim/)
