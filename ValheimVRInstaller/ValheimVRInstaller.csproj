@@ -11,9 +11,9 @@
     <ApplicationTitle>Valheim VR - Installateur Édition Française</ApplicationTitle>
     <Company>LordMadTrix</Company>
     <Product>Valheim VR Mod - Édition Française</Product>
-    <Version>0.9.22.0</Version>
-    <FileVersion>0.9.22.0</FileVersion>
-    <AssemblyVersion>0.9.22.0</AssemblyVersion>
+    <Version>0.9.26.0</Version>
+    <FileVersion>0.9.26.0</FileVersion>
+    <AssemblyVersion>0.9.26.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

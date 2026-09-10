@@ -14,6 +14,8 @@ namespace ValheimVRInstaller;
 public partial class MainWindow : Window
 {
     private string _gamePath = string.Empty;
+    // Type de casque VR détecté : "ALVR", "WiVRn", "SteamVR", "Aucun"
+    private string _casqueVrDetecte = "Aucun";
 
     public MainWindow()
     {
@@ -41,6 +43,9 @@ public partial class MainWindow : Window
             Log("[!] Répertoire Valheim non détecté automatiquement.");
             Log("Veuillez cliquer sur 'Parcourir...' pour sélectionner votre dossier Valheim.");
         }
+
+        // Détection du casque VR / client streaming Quest 3
+        DetecterCasqueVR();
     }
 
     private void Log(string message)
@@ -50,6 +55,158 @@ public partial class MainWindow : Window
             TxtLogs.AppendText(message + Environment.NewLine);
             Scroller.ScrollToEnd();
         });
+    }
+
+    // =========================================================
+    // DÉTECTION CASQUE VR / QUEST 3 (ALVR, WiVRn, SteamVR)
+    // =========================================================
+    private void DetecterCasqueVR()
+    {
+        Task.Run(() =>
+        {
+            string casque = "Aucun";
+            string badge = "❌ Aucun client VR détecté";
+            string flux = "";
+            bool showALVR = true;
+
+            // 1. Vérification ALVR (dossier AppData + registre + exe)
+            string alvrAppData = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ALVR");
+            string alvrLocal = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ALVR");
+            bool alvrFound = Directory.Exists(alvrAppData) || Directory.Exists(alvrLocal)
+                || VerifierRegistreApp("ALVR") || TrouverExe("ALVR");
+
+            if (alvrFound)
+            {
+                casque = "ALVR";
+                badge = "✅ ALVR détecté (streaming Quest)";
+                flux = "Quest 3 → Wi-Fi 6 → ALVR → SteamVR → Valheim VR";
+                showALVR = false;
+            }
+
+            // 2. Vérification WiVRn
+            if (casque == "Aucun")
+            {
+                string wivrnPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WiVRn");
+                bool wivrnFound = Directory.Exists(wivrnPath) || VerifierRegistreApp("WiVRn") || TrouverExe("WiVRn");
+                if (wivrnFound)
+                {
+                    casque = "WiVRn";
+                    badge = "✅ WiVRn détecté (streaming Quest open-source)";
+                    flux = "Quest 3 → Wi-Fi 6 → WiVRn → OpenXR → Valheim VR";
+                    showALVR = false;
+                }
+            }
+
+            // 3. Vérification SteamVR natif (cabled / Index / Vive)
+            if (casque == "Aucun")
+            {
+                try
+                {
+                    using var key = Registry.CurrentUser.OpenSubKey(@"Software\Valve\SteamVR");
+                    if (key != null)
+                    {
+                        casque = "SteamVR";
+                        badge = "✅ SteamVR détecté (filé / Index / Vive)";
+                        flux = "Casque → USB/DP → SteamVR → Valheim VR";
+                        showALVR = false;
+                    }
+                }
+                catch { }
+            }
+
+            _casqueVrDetecte = casque;
+
+            // Mise à jour de l'UI sur le thread principal
+            Dispatcher.Invoke(() =>
+            {
+                TxtCasqueBadge.Text = badge;
+                TxtFluxVR.Text = flux;
+
+                // Couleur du badge selon l'état
+                BadgeCasque.Background = casque == "Aucun"
+                    ? System.Windows.Media.Brushes.DarkRed
+                    : System.Windows.Media.Brushes.DarkGreen;
+
+                TxtCasqueBadge.Foreground = casque == "Aucun"
+                    ? System.Windows.Media.Brushes.OrangeRed
+                    : System.Windows.Media.Brushes.LightGreen;
+
+                // Activer la checkbox Quest 3 si ALVR ou WiVRn
+                if (casque == "ALVR" || casque == "WiVRn")
+                {
+                    ChkQuest3Optimize.IsChecked = true;
+                    ChkQuest3Optimize.IsEnabled = true;
+                }
+
+                // Bouton installer ALVR visible seulement si rien de trouvé
+                BtnInstallALVR.Visibility = showALVR ? Visibility.Visible : Visibility.Collapsed;
+
+                Log($"[VR] Casque détecté : {badge}");
+            });
+        });
+    }
+
+    // Vérifie dans la clé de désinstallation Windows si une app est installée
+    private static bool VerifierRegistreApp(string nomApp)
+    {
+        string[] keys = {
+            @"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall",
+            @"SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall"
+        };
+        foreach (var keyPath in keys)
+        {
+            try
+            {
+                using var key = Registry.LocalMachine.OpenSubKey(keyPath);
+                if (key == null) continue;
+                foreach (var sub in key.GetSubKeyNames())
+                {
+                    using var subKey = key.OpenSubKey(sub);
+                    var name = subKey?.GetValue("DisplayName") as string;
+                    if (name != null && name.Contains(nomApp, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+            }
+            catch { }
+        }
+        return false;
+    }
+
+    // Cherche un exécutable dans les chemins communs
+    private static bool TrouverExe(string nom)
+    {
+        string[] paths = {
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles),
+            Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86),
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+        };
+        foreach (var root in paths)
+        {
+            if (string.IsNullOrEmpty(root)) continue;
+            try
+            {
+                var found = Directory.EnumerateFiles(root, $"*{nom}*.exe", SearchOption.AllDirectories)
+                    .Take(1).Any();
+                if (found) return true;
+            }
+            catch { }
+        }
+        return false;
+    }
+
+    // Bouton : ouvrir la page de téléchargement ALVR
+    private void BtnInstallALVR_Click(object sender, RoutedEventArgs e)
+    {
+        try
+        {
+            Process.Start(new ProcessStartInfo(
+                "https://github.com/alvr-org/ALVR/releases/latest") { UseShellExecute = true });
+            Log("[VR] Page de téléchargement ALVR ouverte dans le navigateur.");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Impossible d'ouvrir le navigateur :\n{ex.Message}", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     private string FindValheimPath()
@@ -234,6 +391,7 @@ public partial class MainWindow : Window
                 string cfgPath = Path.Combine(_gamePath, "BepInEx", "config", "org.bepinex.plugins.valheimvrmod.cfg");
                 bool enableComfort = true;
                 bool enableAimSmoothing = true;
+                bool quest3Optimize = false;
                 int hardwareProfile = 1; // 0 = Eco, 1 = Balanced, 2 = Ultra
                 string profileName = "Équilibré (Recommandé)";
 
@@ -241,6 +399,7 @@ public partial class MainWindow : Window
                 {
                     enableComfort = ChkComfortVignette.IsChecked == true;
                     enableAimSmoothing = ChkAimSmoothing.IsChecked == true;
+                    quest3Optimize = ChkQuest3Optimize.IsChecked == true;
                     if (RadEco.IsChecked == true)
                     {
                         hardwareProfile = 0;
@@ -258,8 +417,11 @@ public partial class MainWindow : Window
                     }
                 });
 
+                if (quest3Optimize)
+                    Log("[VR] Optimisation Quest 3 activée : 120Hz, H.265, bitrate 150 Mbps.");
+
                 Log($"[i] Application du profil de performance : {profileName}");
-                ConfigureModSettings(cfgPath, enableComfort, enableAimSmoothing, hardwareProfile);
+                ConfigureModSettings(cfgPath, enableComfort, enableAimSmoothing, hardwareProfile, quest3Optimize);
                 Log("[OK] Paramètres VR et optimisations matérielles enregistrés avec succès.");
 
                 Dispatcher.Invoke(() => PrgProgress.Value = 90);
@@ -307,7 +469,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ConfigureModSettings(string cfgPath, bool comfortVignette, bool aimSmoothing, int hardwareProfile)
+    private void ConfigureModSettings(string cfgPath, bool comfortVignette, bool aimSmoothing, int hardwareProfile, bool quest3Optimize = false)
     {
         try
         {
@@ -392,6 +554,19 @@ public partial class MainWindow : Window
                 sb.AppendLine();
                 sb.AppendLine("[General]");
                 sb.AppendLine($"MemoryCleanupEnabled = {memoryCleanup.ToString().ToLower()}");
+
+                // Bloc d'optimisation Quest 3 si activé
+                if (quest3Optimize)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("[Quest3]");
+                    sb.AppendLine("Quest3StreamingEnabled = true");
+                    sb.AppendLine("Quest3RefreshRate = 120");
+                    sb.AppendLine("Quest3VideoCodec = h265");
+                    sb.AppendLine("Quest3Bitrate = 150");
+                    sb.AppendLine("Quest3SupersamplingRatio = 1.3");
+                }
+
                 File.WriteAllText(cfgPath, sb.ToString(), Encoding.UTF8);
             }
         }
