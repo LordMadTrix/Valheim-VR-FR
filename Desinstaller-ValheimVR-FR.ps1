@@ -75,10 +75,13 @@ if (Test-Path $subsys) {
 
 # 3. Raccourci bureau
 $desktopPath = [Environment]::GetFolderPath("Desktop")
-$shortcut = Join-Path $desktopPath "Valheim VR (Français).url"
-if (Test-Path $shortcut) {
-    Remove-Item -Path $shortcut -Force
-    Write-Host "  [OK] Raccourci du bureau supprimé" -ForegroundColor Green
+$shortcuts = @("Valheim VR (FR).url", "Valheim VR (Français).url")
+foreach ($s in $shortcuts) {
+    $scPath = Join-Path $desktopPath $s
+    if (Test-Path $scPath) {
+        Remove-Item -Path $scPath -Force
+        Write-Host "  [OK] Raccourci '$s' supprimé du bureau" -ForegroundColor Green
+    }
 }
 
 Write-Host ""

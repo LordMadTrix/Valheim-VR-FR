@@ -6,7 +6,7 @@
 
 <br/>
 
-[![Dernière Release](https://img.shields.io/badge/Release-v0.9.25--FR-gold.svg?style=for-the-badge&logo=github)](https://github.com/LordMadTrix/Valheim-VR-FR/releases)
+[![Dernière Release](https://img.shields.io/badge/Release-v0.9.26--FR-gold.svg?style=for-the-badge&logo=github)](https://github.com/LordMadTrix/Valheim-VR-FR/releases)
 [![Compatibilité Valheim](https://img.shields.io/badge/Valheim-Unity%206%20%7C%20Ashlands%20%7C%20Bog%20Witch-blue.svg?style=for-the-badge&logo=steam)](https://store.steampowered.com/app/892970/Valheim/)
 [![Langue](https://img.shields.io/badge/Langue-100%25%20Fran%C3%A7ais-green.svg?style=for-the-badge)](#-7-traduction-int%C3%A9grale-en-fran%C3%A7ais)
 [![OpenVR / SteamVR](https://img.shields.io/badge/VR-SteamVR%20%7C%20OpenVR-orange.svg?style=for-the-badge&logo=steamvr)](https://store.steampowered.com/app/250820/SteamVR/)
@@ -21,7 +21,7 @@
 
 ---
 
-## 🌟 Nouveautés Majeures de l'Édition Française (v0.9.25)
+## 🌟 Nouveautés Majeures de l'Édition Française (v0.9.26)
 
 <table>
 <tr>

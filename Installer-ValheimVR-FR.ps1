@@ -22,7 +22,7 @@ function Write-Header {
     Clear-Host
     Write-Host "====================================================================" -ForegroundColor Cyan
     Write-Host "           INSTALLATEUR OFFICIEL VALHEIM VR (VHVR) - FR             " -ForegroundColor Yellow -NoNewline
-    Write-Host " [v0.9.21-FR]" -ForegroundColor Green
+    Write-Host " [v0.9.26-FR]" -ForegroundColor Green
     Write-Host "           Adapté pour Valheim (Unity 6 / Ashlands / Bog Witch)     " -ForegroundColor DarkCyan
     Write-Host "====================================================================" -ForegroundColor Cyan
     Write-Host ""
@@ -116,11 +116,13 @@ if (-not (Test-Path (Join-Path $sourceModDir "ValheimVRMod\ValheimVRMod.csproj")
 $releaseDir = Join-Path $sourceModDir "ValheimVRMod\release"
 $unityBuildDir = Join-Path $sourceModDir "Unity\build\ValheimVR_Data"
 
-# Vérification ou compilation préalable si nécessaire
-$modDll = Join-Path $sourceModDir "ValheimVRMod\bin\Debug\net46\ValheimVRMod.dll"
-if (-not (Test-Path $modDll)) {
-    Write-Info "Compilation du mod en cours via dotnet build..."
-    $buildProcess = Start-Process "dotnet" -ArgumentList "build ValheimVRMod.sln -c Debug" -WorkingDirectory $sourceModDir -Wait -PassThru -NoNewWindow
+# Vérification ou compilation préalable si nécessaire (priorité Release pour performance max)
+$modDllRelease = Join-Path $sourceModDir "ValheimVRMod\bin\Release\net46\ValheimVRMod.dll"
+$modDllDebug   = Join-Path $sourceModDir "ValheimVRMod\bin\Debug\net46\ValheimVRMod.dll"
+
+if (-not (Test-Path $modDllRelease) -and -not (Test-Path $modDllDebug)) {
+    Write-Info "Compilation du mod en cours via dotnet build (Release)..."
+    $buildProcess = Start-Process "dotnet" -ArgumentList "build ValheimVRMod.sln -c Release" -WorkingDirectory $sourceModDir -Wait -PassThru -NoNewWindow
     if ($buildProcess.ExitCode -ne 0) {
         Write-Err "Échec de la compilation du mod !"
         Pause
@@ -128,6 +130,8 @@ if (-not (Test-Path $modDll)) {
     }
     Write-Success "Compilation terminée avec succès."
 }
+
+$modDll = if (Test-Path $modDllRelease) { $modDllRelease } else { $modDllDebug }
 
 # 4. Déploiement des composants
 Write-Host ""

@@ -482,6 +482,7 @@ public partial class MainWindow : Window
             // Définition des valeurs selon le profil matériel choisi
             // hardwareProfile: 0 = Eco / Quest 2, 1 = Balanced, 2 = Ultra
             bool physicsSync = true;
+            int targetPhysicsHz = quest3Optimize ? 120 : (hardwareProfile == 0 ? 80 : 90);
             bool shadowOpt = (hardwareProfile <= 1); // Ombres optimisées en Eco et Équilibré
             bool memoryCleanup = true;
             bool vrSharpening = true;
@@ -494,6 +495,7 @@ public partial class MainWindow : Window
                 { "EnableComfortVignette", ("Comfort", comfortVignette.ToString().ToLower()) },
                 { "EnableBowAimSmoothing", ("Motion Control", aimSmoothing.ToString().ToLower()) },
                 { "PhysicsSyncEnabled", ("Graphics", physicsSync.ToString().ToLower()) },
+                { "VRTargetPhysicsHz", ("Graphics", targetPhysicsHz.ToString()) },
                 { "ShadowOptimizationEnabled", ("Graphics", shadowOpt.ToString().ToLower()) },
                 { "MemoryCleanupEnabled", ("General", memoryCleanup.ToString().ToLower()) },
                 { "VRSharpeningEnabled", ("Graphics", vrSharpening.ToString().ToLower()) },
@@ -501,6 +503,15 @@ public partial class MainWindow : Window
                 { "UseAmplifyOcclusion", ("Graphics", amplifyOcclusion.ToString().ToLower()) },
                 { "BuildingPieceDetailReductionFactor", ("Graphics", buildingLOD) }
             };
+
+            if (quest3Optimize)
+            {
+                desiredSettings["Quest3StreamingEnabled"] = ("Quest3", "true");
+                desiredSettings["Quest3RefreshRate"] = ("Quest3", "120");
+                desiredSettings["Quest3VideoCodec"] = ("Quest3", "h265");
+                desiredSettings["Quest3Bitrate"] = ("Quest3", "150");
+                desiredSettings["Quest3SupersamplingRatio"] = ("Quest3", "1.3");
+            }
 
             if (File.Exists(cfgPath))
             {
@@ -546,6 +557,7 @@ public partial class MainWindow : Window
                 sb.AppendLine();
                 sb.AppendLine("[Graphics]");
                 sb.AppendLine($"PhysicsSyncEnabled = {physicsSync.ToString().ToLower()}");
+                sb.AppendLine($"VRTargetPhysicsHz = {targetPhysicsHz}");
                 sb.AppendLine($"ShadowOptimizationEnabled = {shadowOpt.ToString().ToLower()}");
                 sb.AppendLine($"VRSharpeningEnabled = {vrSharpening.ToString().ToLower()}");
                 sb.AppendLine($"VRAntiGlareBloomEnabled = {vrBloom.ToString().ToLower()}");
@@ -647,6 +659,19 @@ public partial class MainWindow : Window
                     Directory.Delete(subsys, true);
                     Log("[OK] XRSDKOpenVR retiré de valheim_Data\\UnitySubsystems.");
                 }
+
+                // Nettoyage raccourcis Bureau
+                try
+                {
+                    string desktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
+                    string[] shortcuts = { "Valheim VR (FR).url", "Valheim VR (Français).url" };
+                    foreach (var sc in shortcuts)
+                    {
+                        string p = Path.Combine(desktop, sc);
+                        if (File.Exists(p)) { File.Delete(p); Log($"[OK] Raccourci Bureau '{sc}' retiré."); }
+                    }
+                }
+                catch { }
 
                 Log("[OK] Valheim est restauré en mode écran plat d'origine !");
             }
